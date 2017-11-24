@@ -1,3 +1,11 @@
+# original implementations of the methods below are
+#  Copyright © 2001-2017 Python Software Foundation; All Rights Reserved
+# they are licensed under the PSF LICENSE AGREEMENT FOR PYTHON 3.5.4
+
+# changes were applied to allow these methods to deal with ansi color escape codes. These changes are
+#  Copyright (c) 2017, Emergence by Design Inc.
+
+
 from argparse import HelpFormatter
 from gettext import gettext as _
 from textwrap import TextWrapper
