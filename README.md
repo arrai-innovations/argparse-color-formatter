@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(
 
 ## Before & After
 Ansi color escapes using the default `HelpFormatter`:
-[before screenshot](/before.png)
+![before screenshot](/before.png)
 
 Ansi color escapes using this libraries new `ColorHelpFormatter`:
-[after screenshot](/after.png)
+![after screenshot](/after.png)
