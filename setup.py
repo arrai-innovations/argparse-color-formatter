@@ -8,6 +8,34 @@ setup(
                 ' Specifically, this formatter does not count escape characters as displayed'
                 ' characters when wrapping ``argparse``\'s help text into the terminal.',
     long_description='''
+.. list-table::
+   :header-rows: 1
+
+   * - Branch
+     - Build Status
+     - Coverage Status
+   * - master
+     -
+     .. image:: https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/master/shields_badge.svg
+        :target: https://semaphoreci.com/emergence/argparse-color-formatter
+        :alt: Build Status
+
+     -
+     .. image:: https://docs.emergence.com/argparse-color-formatter/htmlcov_master/coverage.svg
+        :target: https://docs.emergence.com/argparse-color-formatter/htmlcov_master/
+        :alt: Coverage Status
+
+   * - develop
+     -
+     .. image:: https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/develop/shields_badge.svg
+        :target: https://semaphoreci.com/emergence/argparse-color-formatter
+        :alt: Build Status
+
+     -
+     .. image:: https://docs.emergence.com/argparse-color-formatter/htmlcov_develop/coverage.svg
+        :target: https://docs.emergence.com/argparse-color-formatter/htmlcov_develop/
+        :alt: Coverage Status
+
 Install
 -------
 
