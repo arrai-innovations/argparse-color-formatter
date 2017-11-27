@@ -1,0 +1,13 @@
+[run]
+branch = True
+source =
+    argparse_color_formatter.py
+
+[report]
+exclude_lines =
+    raise NotImplementedError
+    if six.PY2:
+    if six.PY3:
+    if PY2:
+    if PY3:
+    except ImportError
