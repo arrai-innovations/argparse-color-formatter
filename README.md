@@ -1,7 +1,5 @@
 # argparse-color-formatter
-a [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.html#formatter-class) that knows how to
- deal with ansi color escapes. specifically, this formatter does not count ansi color escape characters as displayed
- characters when wrapping argparse's help text into the terminal.
+A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.html#formatter-class) that deals with ANSI colour escapes. Specifically, this formatter does not count escape characters as displayed characters when wrapping argparse's help text into the terminal.
 
 > ![That script's help text is so cool...](/acf.png "That script's help text is so cool...")
 
@@ -19,8 +17,8 @@ parser = argparse.ArgumentParser(
 ```
 
 ## Before & After
-Ansi color escapes using the default `HelpFormatter`:
+ANSI colour escapes using the default `HelpFormatter`:
 ![before screenshot](/before.png)
 
-Ansi color escapes using this libraries new `ColorHelpFormatter`:
+Ansi colour escapes using this libraries new `ColorHelpFormatter`:
 ![after screenshot](/after.png)
