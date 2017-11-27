@@ -13,6 +13,7 @@ from argparse_color_formatter import ColorHelpFormatter
 
 try:
     from contextlib import redirect_stdout
+    from contextlib import redirect_stderr
 except ImportError:
     import contextlib
 
@@ -22,6 +23,13 @@ except ImportError:
         sys.stdout = target
         yield
         sys.stdout = original
+
+    @contextlib.contextmanager
+    def redirect_stderr(target):
+        original = sys.stderr
+        sys.stderr = target
+        yield
+        sys.stderr = original
 
 colors = OrderedDict((
     ('red', partial(color, fg='red', style='bold')),
@@ -77,8 +85,10 @@ def rainbow_maker_arg_help(color_name):
 
 def rainbow_maker(args):
     parser = argparse.ArgumentParser(
-        prog='rainbow_maker',
-        usage='{rainbow_maker} [-h] {first} {second} {third} {forth} {fifth} {sixth} {seventh}'.format(
+        prog='{rainbow_maker}'.format(
+            **color_kwargs
+        ),
+        usage='%(prog)s [-h] {first} {second} {third} {forth} {fifth} {sixth} {seventh}'.format(
             **color_kwargs
         ),
         epilog='This epilog has some {colorful} escapes in it as well and should not wrap on 80.'.format(
@@ -95,13 +105,48 @@ def rainbow_maker(args):
     parser.parse_args(args)
 
 
+def rainbow_maker_auto_usage(args):
+    parser = argparse.ArgumentParser(
+        prog='{rainbow_maker}'.format(
+            **color_kwargs
+        ),
+        epilog='This epilog has some {colorful} escapes in it as well and should not wrap on 80.'.format(
+            **color_kwargs
+        ),
+        description='This script is a test for {rainbow_maker}. This description consists of 140 chars.'
+                    ' It should be able to fit onto two 80 char lines.'.format(**color_kwargs),
+        formatter_class=ColorHelpFormatter,
+        add_help=False
+    )
+    for arg_name, color_name in zip(color_pos.keys(), color_names.keys()):
+        parser.add_argument(arg_name, default=color_name, help=rainbow_maker_arg_help(color_name))
+    parser.add_argument('-h', '--help', action='help', help='displays this {colorful} help text'.format(**color_kwargs))
+    parser.parse_args(args)
+
+
+def rainbow_maker_no_args(args):
+    parser = argparse.ArgumentParser(
+        prog='{rainbow_maker}'.format(
+            **color_kwargs
+        ),
+        epilog='This epilog has some {colorful} escapes in it as well and should not wrap on 80.'.format(
+            **color_kwargs
+        ),
+        description='This script is a test for {rainbow_maker}. This description consists of 140 chars.'
+                    ' It should be able to fit onto two 80 char lines.'.format(**color_kwargs),
+        formatter_class=ColorHelpFormatter,
+        add_help=False
+    )
+    parser.parse_args(args)
+
+
 class TestColorArgsParserOutput(TestCase):
     maxDiff = None
 
     def test_color_output_wrapped_as_expected(self):
         out = StringIO()
         with redirect_stdout(out):
-            self.assertRaises(SystemExit, rainbow_maker, ['rainbow_maker.py', '-h'])
+            self.assertRaises(SystemExit, rainbow_maker, ['-h'])
         out.seek(0)
         self.assertEqual(
             out.read(),
@@ -123,6 +168,44 @@ class TestColorArgsParserOutput(TestCase):
             '  -h, --help  displays this {colorful} help text\n'
             '\n'
             'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(**color_kwargs)
+        )
+
+    def test_color_output_wrapped_as_expected_with_auto_usage(self):
+        out = StringIO()
+        with redirect_stdout(out):
+            self.assertRaises(SystemExit, rainbow_maker_auto_usage, ['-h'])
+        out.seek(0)
+        self.assertEqual(
+            out.read(),
+            'usage: {rainbow_maker} [-h] first second third forth fifth sixth seventh\n'
+            '\n'
+            'This script is a test for {rainbow_maker}. This description consists of 140\n'
+            'chars. It should be able to fit onto two 80 char lines.\n'
+            '\n'
+            'positional arguments:\n'
+            '  first       {color} used when making rainbow, {typically} this would be {red}.\n'
+            '  second      {color} used when making rainbow, {typically} this would be {orange}.\n'
+            '  third       {color} used when making rainbow, {typically} this would be {yellow}.\n'
+            '  forth       {color} used when making rainbow, {typically} this would be {green}.\n'
+            '  fifth       {color} used when making rainbow, {typically} this would be {blue}.\n'
+            '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
+            '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
+            '\n'
+            'optional arguments:\n'
+            '  -h, --help  displays this {colorful} help text\n'
+            '\n'
+            'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(**color_kwargs)
+        )
+
+    def test_color_output_wrapped_as_expected_with_no_args(self):
+        out = StringIO()
+        with redirect_stderr(out):
+            self.assertRaises(SystemExit, rainbow_maker_no_args, ['--bad'])
+        out.seek(0)
+        self.assertEqual(
+            out.read(),
+            'usage: {rainbow_maker}\n'
+            '{rainbow_maker}: error: unrecognized arguments: --bad\n'.format(**color_kwargs)
         )
 
 
