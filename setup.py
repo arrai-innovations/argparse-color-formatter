@@ -16,7 +16,7 @@ setup(
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
-        'License :: OSI Approved :: BSD-3-Clause',
+        'License :: OSI Approved :: BSD License',
         'Environment :: Console',
         'Intended Audience :: Developers',
     ]
