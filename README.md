@@ -3,6 +3,12 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 > ![That script's help text is so cool...](/acf.png "That script's help text is so cool...")
 
+## Install
+
+```shell
+$ pip install argparse-color-formatter
+```
+
 ## Usage
 
 Pass in `argparse_color_formatter.ColorHelpFormatter` to a new argument parser as `formatter_class`
