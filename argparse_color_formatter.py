@@ -217,3 +217,13 @@ class ColorTextWrapper(TextWrapper):
                     break
 
         return lines
+
+
+class ColorRawDescriptionHelpFormatter(ColorHelpFormatter):
+    def _fill_text(self, text, width, indent):
+        return ''.join(indent + line for line in text.splitlines(keepends=True))
+
+
+class ColorRawTextHelpFormatter(ColorRawDescriptionHelpFormatter):
+    def _split_lines(self, text, width):
+        return text.splitlines()
