@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='argparse-color-formatter',
     url='https://github.com/emergence/argparse-color-formatter/',
-    version='1.1.0',
+    version='1.1.1',
     description='a ``formatter_class`` for ``argparse`` that deals with ANSI colour escapes.'
                 ' Specifically, this formatter does not count escape characters as displayed'
                 ' characters when wrapping ``argparse``\'s help text into the terminal.',
@@ -15,26 +15,22 @@ setup(
      - Build Status
      - Coverage Status
    * - master
-     -
-     .. image:: https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/master/shields_badge.svg
-        :target: https://semaphoreci.com/emergence/argparse-color-formatter
-        :alt: Build Status
+     - .. image:: https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/master/shields_badge.svg
+          :target: https://semaphoreci.com/emergence/argparse-color-formatter
+          :alt: Build Status
 
-     -
-     .. image:: https://docs.emergence.com/argparse-color-formatter/htmlcov_master/coverage.svg
-        :target: https://docs.emergence.com/argparse-color-formatter/htmlcov_master/
-        :alt: Coverage Status
+     -  .. image:: https://docs.emergence.com/argparse-color-formatter/htmlcov_master/coverage.svg
+           :target: https://docs.emergence.com/argparse-color-formatter/htmlcov_master/
+           :alt: Coverage Status
 
    * - develop
-     -
-     .. image:: https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/develop/shields_badge.svg
-        :target: https://semaphoreci.com/emergence/argparse-color-formatter
-        :alt: Build Status
+     -  .. image:: https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/develop/shields_badge.svg
+           :target: https://semaphoreci.com/emergence/argparse-color-formatter
+           :alt: Build Status
 
-     -
-     .. image:: https://docs.emergence.com/argparse-color-formatter/htmlcov_develop/coverage.svg
-        :target: https://docs.emergence.com/argparse-color-formatter/htmlcov_develop/
-        :alt: Coverage Status
+     -  .. image:: https://docs.emergence.com/argparse-color-formatter/htmlcov_develop/coverage.svg
+           :target: https://docs.emergence.com/argparse-color-formatter/htmlcov_develop/
+           :alt: Coverage Status
 
 Install
 -------
