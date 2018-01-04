@@ -7,6 +7,9 @@
 #  Copyright (c) 2017, Emergence by Design Inc.
 
 
+# some changes were also made to make this be python 2.7 compatible.
+
+
 from argparse import HelpFormatter
 from gettext import gettext as _
 from textwrap import TextWrapper
