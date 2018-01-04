@@ -58,6 +58,7 @@ Pass in ``argparse_color_formatter.ColorHelpFormatter`` to a new argument parser
     py_modules=['argparse_color_formatter'],
     install_requires=[x for x in open('requirements.txt').read().split('\n') if x],
     license='LICENSE',
+    test_suite='tests',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 2',
