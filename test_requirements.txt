@@ -1,2 +1,2 @@
-coverage>=4.4.2<5.0.0
-coverage-badge>=0.2.0<1.0.0
+coverage>=4.4.2,<5.0.0
+coverage-badge>=0.2.0,<1.0.0

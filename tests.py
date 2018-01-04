@@ -2,9 +2,9 @@
 
 import argparse
 import sys
-from collections import OrderedDict
-from unittest import TestCase, mock
+from unittest import TestCase
 
+from collections import OrderedDict
 from colors import bold, color, underline
 from functools import partial
 from six import StringIO

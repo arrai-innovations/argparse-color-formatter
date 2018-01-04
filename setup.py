@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='argparse-color-formatter',
     url='https://github.com/emergence/argparse-color-formatter/',
-    version='1.1.1',
+    version='1.2.0',
     description='a ``formatter_class`` for ``argparse`` that deals with ANSI colour escapes.'
                 ' Specifically, this formatter does not count escape characters as displayed'
                 ' characters when wrapping ``argparse``\'s help text into the terminal.',
@@ -58,8 +58,11 @@ Pass in ``argparse_color_formatter.ColorHelpFormatter`` to a new argument parser
     py_modules=['argparse_color_formatter'],
     install_requires=[x for x in open('requirements.txt').read().split('\n') if x],
     license='LICENSE',
+    test_suite='tests',
     classifiers=[
         'Development Status :: 4 - Beta',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'License :: OSI Approved :: BSD License',
