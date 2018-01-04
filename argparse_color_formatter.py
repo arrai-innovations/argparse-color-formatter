@@ -12,6 +12,7 @@ from gettext import gettext as _
 from textwrap import TextWrapper
 
 import re as _re
+import six
 from colors import strip_color
 
 
@@ -134,13 +135,14 @@ class ColorTextWrapper(TextWrapper):
         lines = []
         if self.width <= 0:
             raise ValueError("invalid width %r (must be > 0)" % self.width)
-        if self.max_lines is not None:
-            if self.max_lines > 1:
-                indent = self.subsequent_indent
-            else:
-                indent = self.initial_indent
-            if len(indent) + len(self.placeholder.lstrip()) > self.width:
-                raise ValueError("placeholder too large for max width")
+        if six.PY3:
+            if self.max_lines is not None:
+                if self.max_lines > 1:
+                    indent = self.subsequent_indent
+                else:
+                    indent = self.initial_indent
+                if len(indent) + len(self.placeholder.lstrip()) > self.width:
+                    raise ValueError("placeholder too large for max width")
 
         # Arrange in reverse order so items can be efficiently popped
         # from a stack of chucks.
@@ -191,31 +193,34 @@ class ColorTextWrapper(TextWrapper):
                 del cur_line[-1]
 
             if cur_line:
-                if (self.max_lines is None or
-                    len(lines) + 1 < self.max_lines or
-                    (not chunks or
-                     self.drop_whitespace and
-                     len(chunks) == 1 and
-                     not chunks[0].strip()) and cur_len <= width):
-                    # Convert current line back to a string and store it in
-                    # list of all lines (return value).
+                if six.PY2:
                     lines.append(indent + ''.join(cur_line))
                 else:
-                    while cur_line:
-                        if strip_color(cur_line[-1]).strip() and cur_len + len(self.placeholder) <= width:
-                            cur_line.append(self.placeholder)
-                            lines.append(indent + ''.join(cur_line))
-                            break
-                        cur_len -= len(strip_color(cur_line[-1]))
-                        del cur_line[-1]
+                    if (self.max_lines is None or
+                        len(lines) + 1 < self.max_lines or
+                        (not chunks or
+                         self.drop_whitespace and
+                         len(chunks) == 1 and
+                         not chunks[0].strip()) and cur_len <= width):
+                        # Convert current line back to a string and store it in
+                        # list of all lines (return value).
+                        lines.append(indent + ''.join(cur_line))
                     else:
-                        if lines:
-                            prev_line = lines[-1].rstrip()
-                            if len(strip_color(prev_line)) + len(self.placeholder) <= self.width:
-                                lines[-1] = prev_line + self.placeholder
+                        while cur_line:
+                            if strip_color(cur_line[-1]).strip() and cur_len + len(self.placeholder) <= width:
+                                cur_line.append(self.placeholder)
+                                lines.append(indent + ''.join(cur_line))
                                 break
-                        lines.append(indent + self.placeholder.lstrip())
-                    break
+                            cur_len -= len(strip_color(cur_line[-1]))
+                            del cur_line[-1]
+                        else:
+                            if lines:
+                                prev_line = lines[-1].rstrip()
+                                if len(strip_color(prev_line)) + len(self.placeholder) <= self.width:
+                                    lines[-1] = prev_line + self.placeholder
+                                    break
+                            lines.append(indent + self.placeholder.lstrip())
+                        break
 
         return lines
 
