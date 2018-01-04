@@ -227,7 +227,10 @@ class ColorTextWrapper(TextWrapper):
 
 class ColorRawDescriptionHelpFormatter(ColorHelpFormatter):
     def _fill_text(self, text, width, indent):
-        return ''.join(indent + line for line in text.splitlines(keepends=True))
+        if six.PY3:
+            return ''.join(indent + line for line in text.splitlines(keepends=True))
+        else:
+            return ''.join(indent + line for line in text.splitlines(True))
 
 
 class ColorRawTextHelpFormatter(ColorRawDescriptionHelpFormatter):
