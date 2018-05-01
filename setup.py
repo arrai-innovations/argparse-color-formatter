@@ -4,9 +4,9 @@ setup(
     name='argparse-color-formatter',
     url='https://github.com/emergence/argparse-color-formatter/',
     version='1.2.0',
-    description='a ``formatter_class`` for ``argparse`` that deals with ANSI colour escapes.'
+    description='a `formatter_class` for `argparse` that deals with ANSI colour escapes.'
                 ' Specifically, this formatter does not count escape characters as displayed'
-                ' characters when wrapping ``argparse``\'s help text into the terminal.',
+                ' characters when wrapping `argparse`\'s help text into the terminal.',
     long_description='''
 .. list-table::
    :header-rows: 1
