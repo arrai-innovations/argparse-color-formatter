@@ -5,8 +5,8 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 | Branch | Build Status | Coverage Status |
 | ------ | ------------ | --------------- |
-| master | [![Build Status](https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/master/shields_badge.svg)](https://semaphoreci.com/emergence/argparse-color-formatter) | [![Coverage Status](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master/coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master/) |
-| develop | [![Build Status](https://semaphoreci.com/api/v1/emergence/argparse-color-formatter/branches/develop/shields_badge.svg)](https://semaphoreci.com/emergence/argparse-color-formatter) | [![Coverage Status](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop/coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop/) |
+| master | [![Build Status](https://semaphoreci.com/api/v1/arrai-innovations/argparse-color-formatter/branches/master/shields_badge.svg)](https://semaphoreci.com/arrai-innovations/argparse-color-formatter) | [![Coverage Status](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master/coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master/) |
+| develop | [![Build Status](https://semaphoreci.com/api/v1/arrai-innovations/argparse-color-formatter/branches/develop/shields_badge.svg)](https://semaphoreci.com/arrai-innovations/argparse-color-formatter) | [![Coverage Status](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop/coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop/) |
 
 ## Install
 
