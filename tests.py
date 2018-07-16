@@ -1,6 +1,7 @@
 # Copyright (c) 2017, Emergence by Design Inc.
 
 import argparse
+import os
 import re
 import sys
 from unittest import TestCase, skipIf
@@ -174,6 +175,57 @@ class TestColorArgsParserOutput(TestCase):
             'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(**color_kwargs)
         )
 
+    def test_color_output_wrapped_as_expected_small_width(self):
+        try:
+            os.environ['COLUMNS'] = '42'
+            out = StringIO()
+            with redirect_stdout(out):
+                self.assertRaises(SystemExit, rainbow_maker, ['-h'])
+            out.seek(0)
+            self.assertEqual(
+                out.read(),
+                # usage doesnt wrap for some reason when manually specified.
+                # seems like a bug but leaving alone because seems out of scope re: colors.
+                'usage: {rainbow_maker} [-h] {first} {second} {third} {forth} {fifth} {sixth} {seventh}\n'
+                '\n'
+                'This script is a test for {rainbow_maker}.\n'
+                'This description consists of 140 chars.\n'
+                'It should be able to fit onto two 80\n'
+                'char lines.\n'
+                '\n'
+                'positional arguments:\n'
+                '  first       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {red}.\n'
+                '  second      {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {orange}.\n'
+                '  third       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {yellow}.\n'
+                '  forth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {green}.\n'
+                '  fifth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {blue}.\n'
+                '  sixth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {indigo}.\n'
+                '  seventh     {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {violet}.\n'
+                '\n'
+                'optional arguments:\n'
+                '  -h, --help  displays this {colorful}\n'
+                '              help text\n'
+                '\n'
+                'This epilog has some {colorful} escapes in\n'
+                'it as well and should not wrap on 80.\n'.format(**color_kwargs)
+            )
+        finally:
+            del os.environ['COLUMNS']
+
     def test_color_output_wrapped_as_expected_with_auto_usage(self):
         out = StringIO()
         with redirect_stdout(out):
@@ -200,6 +252,58 @@ class TestColorArgsParserOutput(TestCase):
             '\n'
             'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(**color_kwargs)
         )
+
+    def test_color_output_wrapped_as_expected_with_auto_usage_small_width(self):
+        try:
+            os.environ['COLUMNS'] = '42'
+            out = StringIO()
+            with redirect_stdout(out):
+                self.assertRaises(SystemExit, rainbow_maker_auto_usage, ['-h'])
+            out.seek(0)
+            self.assertEqual(
+                out.read(),
+                'usage: {rainbow_maker}\n'
+                '       [-h]\n'
+                '       first second third forth fifth\n'
+                '       sixth seventh\n'
+                '\n'
+                'This script is a test for {rainbow_maker}.\n'
+                'This description consists of 140 chars.\n'
+                'It should be able to fit onto two 80\n'
+                'char lines.\n'
+                '\n'
+                'positional arguments:\n'
+                '  first       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {red}.\n'
+                '  second      {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {orange}.\n'
+                '  third       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {yellow}.\n'
+                '  forth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {green}.\n'
+                '  fifth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {blue}.\n'
+                '  sixth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {indigo}.\n'
+                '  seventh     {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {violet}.\n'
+                '\n'
+                'optional arguments:\n'
+                '  -h, --help  displays this {colorful}\n'
+                '              help text\n'
+                '\n'
+                'This epilog has some {colorful} escapes in\n'
+                'it as well and should not wrap on 80.\n'.format(**color_kwargs)
+            )
+        finally:
+            del os.environ['COLUMNS']
 
     def test_color_output_wrapped_as_expected_with_no_args(self):
         out = StringIO()
