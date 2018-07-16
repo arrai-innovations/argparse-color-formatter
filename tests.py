@@ -76,7 +76,8 @@ color_kwargs.update(color_pos)
 color_kwargs.update(color_names)
 color_kwargs.update({
     'colorful': rainbow_text('colorful'),
-    'rainbow_maker': rainbow_text('rainbow_maker')
+    'rainbow_maker': rainbow_text('rainbow_maker'),
+    'bow': rainbow_text('bow'),
 })
 
 
@@ -113,6 +114,25 @@ def rainbow_maker(args):
 def rainbow_maker_auto_usage(args):
     parser = argparse.ArgumentParser(
         prog='{rainbow_maker}'.format(
+            **color_kwargs
+        ),
+        epilog='This epilog has some {colorful} escapes in it as well and should not wrap on 80.'.format(
+            **color_kwargs
+        ),
+        description='This script is a test for {rainbow_maker}. This description consists of 140 chars.'
+                    ' It should be able to fit onto two 80 char lines.'.format(**color_kwargs),
+        formatter_class=ColorHelpFormatter,
+        add_help=False
+    )
+    for arg_name, color_name in zip(color_pos.keys(), color_names.keys()):
+        parser.add_argument(arg_name, default=color_name, help=rainbow_maker_arg_help(color_name))
+    parser.add_argument('-h', '--help', action='help', help='displays this {colorful} help text'.format(**color_kwargs))
+    parser.parse_args(args)
+
+
+def rainbow_maker_auto_usage_short_prog(args):
+    parser = argparse.ArgumentParser(
+        prog='{bow}'.format(
             **color_kwargs
         ),
         epilog='This epilog has some {colorful} escapes in it as well and should not wrap on 80.'.format(
@@ -262,10 +282,62 @@ class TestColorArgsParserOutput(TestCase):
             out.seek(0)
             self.assertEqual(
                 out.read(),
-                'usage: {rainbow_maker}\n'
-                '       [-h]\n'
-                '       first second third forth fifth\n'
-                '       sixth seventh\n'
+                'usage: {rainbow_maker} [-h]\n'
+                '                     first second third\n'
+                '                     forth fifth sixth\n'
+                '                     seventh\n'
+                '\n'
+                'This script is a test for {rainbow_maker}.\n'
+                'This description consists of 140 chars.\n'
+                'It should be able to fit onto two 80\n'
+                'char lines.\n'
+                '\n'
+                'positional arguments:\n'
+                '  first       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {red}.\n'
+                '  second      {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {orange}.\n'
+                '  third       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {yellow}.\n'
+                '  forth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {green}.\n'
+                '  fifth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {blue}.\n'
+                '  sixth       {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {indigo}.\n'
+                '  seventh     {color} used when making\n'
+                '              rainbow, {typically} this\n'
+                '              would be {violet}.\n'
+                '\n'
+                'optional arguments:\n'
+                '  -h, --help  displays this {colorful}\n'
+                '              help text\n'
+                '\n'
+                'This epilog has some {colorful} escapes in\n'
+                'it as well and should not wrap on 80.\n'.format(**color_kwargs)
+            )
+        finally:
+            del os.environ['COLUMNS']
+
+
+    def test_color_output_wrapped_as_expected_with_auto_usage_short_prog_small_width(self):
+        try:
+            os.environ['COLUMNS'] = '42'
+            out = StringIO()
+            with redirect_stdout(out):
+                self.assertRaises(SystemExit, rainbow_maker_auto_usage_short_prog, ['-h'])
+            out.seek(0)
+            self.assertEqual(
+                out.read(),
+                'usage: {bow} [-h]\n'
+                '           first second third forth\n'
+                '           fifth sixth seventh\n'
                 '\n'
                 'This script is a test for {rainbow_maker}.\n'
                 'This description consists of 140 chars.\n'

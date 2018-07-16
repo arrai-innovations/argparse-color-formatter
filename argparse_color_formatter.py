@@ -93,8 +93,9 @@ class ColorHelpFormatter(HelpFormatter):
                     return lines
 
                 # if prog is short, follow it with optionals or positionals
-                if len(prefix) + len(prog) <= 0.75 * text_width:
-                    indent = ' ' * (len(prefix) + len(prog) + 1)
+                len_prog = len(strip_color(prog))
+                if len(prefix) + len_prog <= 0.75 * text_width:
+                    indent = ' ' * (len(prefix) + len_prog + 1)
                     if opt_parts:
                         lines = get_lines([prog] + opt_parts, indent, prefix)
                         lines.extend(get_lines(pos_parts, indent))
