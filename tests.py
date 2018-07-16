@@ -396,7 +396,7 @@ class TestColorArgsParserOutput(TestCase):
         finally:
             del os.environ['COLUMNS']
 
-    def test_color_output_wrapped_as_expected_with_auto_usage_short_prog_small_width(self):
+    def test_color_output_wrapped_as_expected_with_auto_usage_long_prog_small_width(self):
         try:
             os.environ['COLUMNS'] = '42'
             out = StringIO()
