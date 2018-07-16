@@ -237,7 +237,6 @@ class ColorRawDescriptionHelpFormatter(ColorHelpFormatter):
             return ''.join(indent + line for line in text.splitlines(keepends=True))
 
 
-
 class ColorRawTextHelpFormatter(ColorRawDescriptionHelpFormatter):
     def _split_lines(self, text, width):
         return text.splitlines()
