@@ -138,7 +138,7 @@ class ColorTextWrapper(TextWrapper):
         lines = []
         if self.width <= 0:
             raise ValueError("invalid width %r (must be > 0)" % self.width)
-        if six.PY3:
+        if six.PY3:  # pragma: no branch
             if self.max_lines is not None:
                 if self.max_lines > 1:
                     indent = self.subsequent_indent
@@ -230,10 +230,11 @@ class ColorTextWrapper(TextWrapper):
 
 class ColorRawDescriptionHelpFormatter(ColorHelpFormatter):
     def _fill_text(self, text, width, indent):
-        if six.PY3:
-            return ''.join(indent + line for line in text.splitlines(keepends=True))
-        else:
+        if six.PY2:
             return ''.join(indent + line for line in text.splitlines(True))
+        else:
+            return ''.join(indent + line for line in text.splitlines(keepends=True))
+
 
 
 class ColorRawTextHelpFormatter(ColorRawDescriptionHelpFormatter):

@@ -9,7 +9,5 @@ exclude_lines =
     if __name__ == '__main__':
     raise NotImplementedError
     if six.PY2:
-    if six.PY3:
     if PY2:
-    if PY3:
     except ImportError
