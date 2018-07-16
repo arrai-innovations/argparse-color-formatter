@@ -12,7 +12,7 @@ setup(
                 ' Specifically, this formatter does not count escape characters as displayed'
                 ' characters when wrapping `argparse`\'s help text into the terminal.',
     long_description=long_description,
-    long_description_conent_type='text/markdown',
+    long_description_content_type='text/markdown',
     author='Arrai Innovations',
     author_email='support@arrai.com',
     py_modules=['argparse_color_formatter'],
