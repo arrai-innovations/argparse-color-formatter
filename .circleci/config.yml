@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  utils: arrai/utils@dev:3
+  utils: arrai/utils@dev:5
 executors:
   python37:
     environment:
@@ -27,7 +27,7 @@ jobs:
           when: always
           command: |
             coverage html
-            export COVERAGE_PERCENTAGE=$(coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}')
+            coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}') >> ~/.coveragep
       - utils/rsync_folder:
           when: always
           folder: ./htmlcov/
@@ -35,7 +35,6 @@ jobs:
           host: docs
       - utils/make_coverage_shield:
           when: always
-          percentage: ${COVERAGE_PERCENTAGE}
           link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/htmlcov_${CIRCLE_BRANCH}_${CIRCLE_JOB}/"
       - utils/rsync_file:
           when: always
