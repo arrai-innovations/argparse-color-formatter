@@ -3,10 +3,13 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 > ![That script's help text is so cool...](/acf.png "That script's help text is so cool...")
 
-| Branch | Build Status | Coverage Status |
-| ------ | ------------ | --------------- |
-| master | [![Build Status](https://semaphoreci.com/api/v1/arrai-innovations/argparse-color-formatter/branches/master/shields_badge.svg)](https://semaphoreci.com/arrai-innovations/argparse-color-formatter) | [![Coverage Status](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master/coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master/) |
-| develop | [![Build Status](https://semaphoreci.com/api/v1/arrai-innovations/argparse-color-formatter/branches/develop/shields_badge.svg)](https://semaphoreci.com/arrai-innovations/argparse-color-formatter) | [![Coverage Status](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop/coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop/) |
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python37/)
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python27/)
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python37/)
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python27/)
 
 ## Install
 
