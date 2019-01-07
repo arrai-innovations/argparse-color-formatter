@@ -27,7 +27,7 @@ jobs:
           when: always
           command: |
             coverage html
-            coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}') >> ~/.coveragep
+            coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}' >> ~/.coveragep
       - utils/rsync_folder:
           when: always
           folder: ./htmlcov/
