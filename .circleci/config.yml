@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  utils: arrai/utils@1.0.0
+  utils: arrai/utils@dev:9
 executors:
   python27:
     environment:
