@@ -2,12 +2,71 @@ version: 2.1
 orbs:
   utils: arrai/utils@dev:5
 executors:
+  python27:
+    environment:
+        LANG: en_US.UTF-8
+    docker:
+     - image: circleci/python:2.7.15
   python37:
     environment:
         LANG: en_US.UTF-8
     docker:
      - image: circleci/python:3.7.2
 jobs:
+  python27:
+    executor: python27
+    steps:
+      - checkout
+      - run: sudo apt-get install rsync
+      - utils/add_ssh_config:
+          host: "docs"
+          hostname: ${DOCS_HOST}
+          port: ${DOCS_PORT}
+          user: ${DOCS_USER}
+      - utils/make_status_shield:
+          status: running
+          color: lightblue
+      - run: sudo pip install -r requirements.txt -r test_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
+      - run: coverage run setup.py test
+      - run:
+          when: always
+          command: |
+            coverage html
+            coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}' >> ~/.coveragep
+      - utils/rsync_folder:
+          when: always
+          folder: ./htmlcov/
+          remote_folder: htmlcov_${CIRCLE_BRANCH}_${CIRCLE_JOB}
+          host: docs
+      - utils/make_coverage_shield:
+          when: always
+          link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/htmlcov_${CIRCLE_BRANCH}_${CIRCLE_JOB}/"
+      - utils/rsync_file:
+          when: always
+          file: ~/coverage.svg
+          remote_file: ${CIRCLE_BRANCH}.${CIRCLE_JOB}.coverage.svg
+          host: docs
+      - run:
+          when: always
+          command: pip freeze > ~/pip.freeze
+      - utils/rsync_file:
+          when: always
+          file: ~/pip.freeze
+          remote_file: ${CIRCLE_BRANCH}.${CIRCLE_JOB}.freeze
+          host: docs
+      - utils/make_status_shield:
+          when: on_success
+          status: passed
+          color: brightgreen
+      - utils/make_status_shield:
+          when: on_fail
+          status: failed
+          color: red
+      - utils/rsync_file:
+          when: always
+          file: ~/status.svg
+          remote_file: ${CIRCLE_BRANCH}.${CIRCLE_JOB}.svg
+          host: docs
   python37:
     executor: python37
     steps:
@@ -65,5 +124,7 @@ jobs:
 workflows:
   test:
     jobs:
+      - python27:
+          context: arrai-global
       - python37:
           context: arrai-global
