@@ -2,18 +2,20 @@
 
 import argparse
 import os
-import re
 import sys
-from unittest import TestCase, skipIf
-
 from collections import OrderedDict
+from functools import partial
+from unittest import TestCase
+from unittest import skipIf
 
 import six
-from colors import bold, color, underline
-from functools import partial
+from colors import bold
+from colors import color
+from colors import underline
 from six import StringIO
 
-from argparse_color_formatter import ColorHelpFormatter, ColorTextWrapper
+from argparse_color_formatter import ColorHelpFormatter
+from argparse_color_formatter import ColorTextWrapper
 
 try:
     from contextlib import redirect_stdout
@@ -523,6 +525,7 @@ class TestColorTextWrapper(TestCase):
             ctw.wrap('0123456789 ' * 2),
             ['01234', '****']
         )
+
 
 if __name__ == '__main__':
     rainbow_maker(None)

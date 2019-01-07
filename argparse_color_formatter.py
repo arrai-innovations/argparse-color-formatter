@@ -10,11 +10,11 @@
 # some changes were also made to make this be python 2.7 compatible.
 
 
+import re as _re
 from argparse import HelpFormatter
 from gettext import gettext as _
 from textwrap import TextWrapper
 
-import re as _re
 import six
 from colors import strip_color
 
@@ -28,7 +28,8 @@ class ColorHelpFormatter(HelpFormatter):
         text = self._whitespace_matcher.sub(' ', text).strip()
         return ColorTextWrapper(width=width).wrap(text)
 
-    def _format_usage(self, usage, actions, groups, prefix):
+    # modified upstream code, not going to refactor for complexity.
+    def _format_usage(self, usage, actions, groups, prefix):  # noqa: C901
         if prefix is None:
             prefix = _('usage: ')
 
@@ -123,7 +124,8 @@ class ColorHelpFormatter(HelpFormatter):
 
 
 class ColorTextWrapper(TextWrapper):
-    def _wrap_chunks(self, chunks):
+    # modified upstream code, not going to refactor for complexity.
+    def _wrap_chunks(self, chunks):  # noqa: C901
         """_wrap_chunks(chunks : [string]) -> [string]
 
         Wrap a sequence of text chunks and return a list of lines of
@@ -174,10 +176,12 @@ class ColorTextWrapper(TextWrapper):
                 del chunks[-1]
 
             while chunks:
-                l = len(strip_color(chunks[-1]))
+                # modified upstream code, not going to refactor for ambiguous variable name.
+                l = len(strip_color(chunks[-1]))  # noqa: E741
 
                 # Can at least squeeze this chunk onto the current line.
-                if cur_len + l <= width:
+                # modified upstream code, not going to refactor for ambiguous variable name.
+                if cur_len + l <= width:  # noqa: E741
                     cur_line.append(chunks.pop())
                     cur_len += l
 
