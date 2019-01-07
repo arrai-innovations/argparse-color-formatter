@@ -54,12 +54,10 @@ jobs:
           when: on_success
           status: passed
           color: brightgreen
-          file: ~/status.svg
       - utils/make_status_shield:
           when: on_fail
           status: failed
           color: red
-          file: ~/status.svg
       - utils/rsync_file:
           when: always
           file: ~/status.svg
