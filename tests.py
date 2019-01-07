@@ -508,6 +508,7 @@ class TestColorTextWrapper(TestCase):
             ['0123456789', '0123456789', '0123456789', '0123456789']
         )
 
+    @skipIf(not six.PY34, 'max_lines was added in python 3.4')
     def test_placeholder_edge_case(self):
         ctw = ColorTextWrapper(width=4, max_lines=1, placeholder='***')
         self.assertEqual(
@@ -515,6 +516,7 @@ class TestColorTextWrapper(TestCase):
             ['***']
         )
 
+    @skipIf(not six.PY34, 'max_lines was added in python 3.4')
     def test_placeholder_edge_case_2(self):
         ctw = ColorTextWrapper(width=5, max_lines=2, placeholder='****')
         self.assertEqual(
