@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
-  utils: arrai/utils@dev:9
+  utils: arrai/utils@dev:10
+  flake8: arrai/flake8@dev:2
 executors:
   python27:
     environment:
@@ -127,4 +128,7 @@ workflows:
       - python27:
           context: arrai-global
       - python37:
+          context: arrai-global
+      - flake8/flake8:
+          name: flake8
           context: arrai-global

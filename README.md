@@ -7,9 +7,13 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python27/)
 
+![Flake8](https://docs.arrai-dev.com/argparse-color-formatter/master.flake8.svg)
+
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python37/)
 
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python27/)
+
+![Flake8](https://docs.arrai-dev.com/argparse-color-formatter/develop.flake8.svg)
 
 ## Install
 
