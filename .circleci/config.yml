@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   utils: arrai/utils@dev:10
-  flake8: arrai/flake8@dev:3
+  flake8: arrai/flake8@dev:4
 executors:
   python27:
     environment:
