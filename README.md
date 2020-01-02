@@ -3,13 +3,25 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 > ![That script's help text is so cool...](/acf.png "That script's help text is so cool...")
 
+###### master
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python38.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python38.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python38/)
+
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python37/)
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python36.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python36.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python36/)
 
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python27/)
 
 ![Flake8](https://docs.arrai-dev.com/argparse-color-formatter/master.flake8.svg)
 
+###### develop
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python38.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python38.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python38/)
+
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python37/)
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python36.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python36.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python36/)
 
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/develop.python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/develop.python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_develop_python27/)
 
