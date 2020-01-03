@@ -23,6 +23,8 @@ try:
 except ImportError:
     import contextlib
 
+
+    # noqa: E303
     @contextlib.contextmanager
     def redirect_stdout(target):
         original = sys.stdout
@@ -30,6 +32,8 @@ except ImportError:
         yield
         sys.stdout = original
 
+
+    # noqa: E303
     @contextlib.contextmanager
     def redirect_stderr(target):
         original = sys.stderr
@@ -191,31 +195,36 @@ class TestColorArgsParserOutput(TestCase):
     maxDiff = None
 
     def test_color_output_wrapped_as_expected(self):
-        out = StringIO()
-        with redirect_stdout(out):
-            self.assertRaises(SystemExit, rainbow_maker, ['-h'])
-        out.seek(0)
-        self.assertEqual(
-            out.read(),
-            'usage: {rainbow_maker} [-h] {first} {second} {third} {forth} {fifth} {sixth} {seventh}\n'
-            '\n'
-            'This script is a test for {rainbow_maker}. This description consists of 140\n'
-            'chars. It should be able to fit onto two 80 char lines.\n'
-            '\n'
-            'positional arguments:\n'
-            '  first       {color} used when making rainbow, {typically} this would be {red}.\n'
-            '  second      {color} used when making rainbow, {typically} this would be {orange}.\n'
-            '  third       {color} used when making rainbow, {typically} this would be {yellow}.\n'
-            '  forth       {color} used when making rainbow, {typically} this would be {green}.\n'
-            '  fifth       {color} used when making rainbow, {typically} this would be {blue}.\n'
-            '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
-            '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
-            '\n'
-            'optional arguments:\n'
-            '  -h, --help  displays this {colorful} help text\n'
-            '\n'
-            'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(**color_kwargs)
-        )
+        try:
+            os.environ['COLUMNS'] = '80'
+            out = StringIO()
+            with redirect_stdout(out):
+                self.assertRaises(SystemExit, rainbow_maker, ['-h'])
+            out.seek(0)
+            self.assertEqual(
+                out.read(),
+                'usage: {rainbow_maker} [-h] {first} {second} {third} {forth} {fifth} {sixth} {seventh}\n'
+                '\n'
+                'This script is a test for {rainbow_maker}. This description consists of 140\n'
+                'chars. It should be able to fit onto two 80 char lines.\n'
+                '\n'
+                'positional arguments:\n'
+                '  first       {color} used when making rainbow, {typically} this would be {red}.\n'
+                '  second      {color} used when making rainbow, {typically} this would be {orange}.\n'
+                '  third       {color} used when making rainbow, {typically} this would be {yellow}.\n'
+                '  forth       {color} used when making rainbow, {typically} this would be {green}.\n'
+                '  fifth       {color} used when making rainbow, {typically} this would be {blue}.\n'
+                '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
+                '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
+                '\n'
+                'optional arguments:\n'
+                '  -h, --help  displays this {colorful} help text\n'
+                '\n'
+                'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(
+                    **color_kwargs)
+            )
+        finally:
+            del os.environ['COLUMNS']
 
     def test_color_output_wrapped_as_expected_small_width(self):
         try:
@@ -269,31 +278,36 @@ class TestColorArgsParserOutput(TestCase):
             del os.environ['COLUMNS']
 
     def test_color_output_wrapped_as_expected_with_auto_usage(self):
-        out = StringIO()
-        with redirect_stdout(out):
-            self.assertRaises(SystemExit, rainbow_maker_auto_usage, ['-h'])
-        out.seek(0)
-        self.assertEqual(
-            out.read(),
-            'usage: {rainbow_maker} [-h] first second third forth fifth sixth seventh\n'
-            '\n'
-            'This script is a test for {rainbow_maker}. This description consists of 140\n'
-            'chars. It should be able to fit onto two 80 char lines.\n'
-            '\n'
-            'positional arguments:\n'
-            '  first       {color} used when making rainbow, {typically} this would be {red}.\n'
-            '  second      {color} used when making rainbow, {typically} this would be {orange}.\n'
-            '  third       {color} used when making rainbow, {typically} this would be {yellow}.\n'
-            '  forth       {color} used when making rainbow, {typically} this would be {green}.\n'
-            '  fifth       {color} used when making rainbow, {typically} this would be {blue}.\n'
-            '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
-            '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
-            '\n'
-            'optional arguments:\n'
-            '  -h, --help  displays this {colorful} help text\n'
-            '\n'
-            'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(**color_kwargs)
-        )
+        try:
+            os.environ['COLUMNS'] = '80'
+            out = StringIO()
+            with redirect_stdout(out):
+                self.assertRaises(SystemExit, rainbow_maker_auto_usage, ['-h'])
+            out.seek(0)
+            self.assertEqual(
+                out.read(),
+                'usage: {rainbow_maker} [-h] first second third forth fifth sixth seventh\n'
+                '\n'
+                'This script is a test for {rainbow_maker}. This description consists of 140\n'
+                'chars. It should be able to fit onto two 80 char lines.\n'
+                '\n'
+                'positional arguments:\n'
+                '  first       {color} used when making rainbow, {typically} this would be {red}.\n'
+                '  second      {color} used when making rainbow, {typically} this would be {orange}.\n'
+                '  third       {color} used when making rainbow, {typically} this would be {yellow}.\n'
+                '  forth       {color} used when making rainbow, {typically} this would be {green}.\n'
+                '  fifth       {color} used when making rainbow, {typically} this would be {blue}.\n'
+                '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
+                '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
+                '\n'
+                'optional arguments:\n'
+                '  -h, --help  displays this {colorful} help text\n'
+                '\n'
+                'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(
+                    **color_kwargs)
+            )
+        finally:
+            del os.environ['COLUMNS']
 
     def test_color_output_wrapped_as_expected_with_auto_usage_small_width(self):
         try:
@@ -465,7 +479,7 @@ class TestColorArgsParserOutput(TestCase):
 class TestColorTextWrapper(TestCase):
     def test_bad_width_error(self):
         ctw = ColorTextWrapper(width=-1)
-        self.assertRaisesRegexp(
+        six.assertRaisesRegex(
             ValueError,
             r'invalid width -1 \(must be > 0\)',
             lambda: ctw.wrap('This is some text to wrap.')
@@ -481,7 +495,7 @@ class TestColorTextWrapper(TestCase):
     @skipIf(not six.PY34, 'max_lines and placeholder were added in python 3.4')
     def test_max_lines_and_placeholder(self):
         ctw = ColorTextWrapper(width=10, max_lines=2, placeholder='**' * 10)
-        self.assertRaisesRegexp(
+        six.assertRaisesRegex(
             ValueError,
             r'placeholder too large for max width',
             lambda: ctw.wrap('01234 56789 01234 56789 01234 56789 01234 56789')
