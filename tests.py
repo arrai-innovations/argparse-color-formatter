@@ -480,6 +480,7 @@ class TestColorTextWrapper(TestCase):
     def test_bad_width_error(self):
         ctw = ColorTextWrapper(width=-1)
         six.assertRaisesRegex(
+            self,
             ValueError,
             r'invalid width -1 \(must be > 0\)',
             lambda: ctw.wrap('This is some text to wrap.')
@@ -496,6 +497,7 @@ class TestColorTextWrapper(TestCase):
     def test_max_lines_and_placeholder(self):
         ctw = ColorTextWrapper(width=10, max_lines=2, placeholder='**' * 10)
         six.assertRaisesRegex(
+            self,
             ValueError,
             r'placeholder too large for max width',
             lambda: ctw.wrap('01234 56789 01234 56789 01234 56789 01234 56789')
