@@ -3,6 +3,8 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 > ![That script's help text is so cool...](https://docs.arrai-dev.com/argparse-color-formatter/readme/acf.png "That script's help text is so cool...")
 
+[![PYPI](https://img.shields.io/pypi/v/argparse-color-formatter?style=for-the-badge)](https://pypi.org/project/argparse-color-formatter/)
+
 ###### master
 
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/master.python38.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/master.python38.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/htmlcov_master_python38/)
