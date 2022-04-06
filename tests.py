@@ -24,8 +24,7 @@ except ImportError:
     import contextlib
 
 
-    # noqa: E303
-    @contextlib.contextmanager
+    @contextlib.contextmanager  # noqa: E303
     def redirect_stdout(target):
         original = sys.stdout
         sys.stdout = target
@@ -33,8 +32,7 @@ except ImportError:
         sys.stdout = original
 
 
-    # noqa: E303
-    @contextlib.contextmanager
+    @contextlib.contextmanager  # noqa: E303
     def redirect_stderr(target):
         original = sys.stderr
         sys.stderr = target
@@ -62,6 +60,15 @@ color_pos = OrderedDict(
 color_names = OrderedDict(
     (k, v(k)) for k, v in colors.items()
 )
+
+if sys.version_info >= (3, 10):
+    color_kwargs.update({
+        'options_string': 'options',
+    })
+else:
+    color_kwargs.update({
+        'options_string': 'optional arguments',
+    })
 
 
 def rainbow_text(text):
@@ -217,7 +224,7 @@ class TestColorArgsParserOutput(TestCase):
                 '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
                 '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful} help text\n'
                 '\n'
                 'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(
@@ -267,7 +274,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'
@@ -300,7 +307,7 @@ class TestColorArgsParserOutput(TestCase):
                 '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
                 '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful} help text\n'
                 '\n'
                 'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(
@@ -351,7 +358,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'
@@ -402,7 +409,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'
@@ -454,7 +461,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'

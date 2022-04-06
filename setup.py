@@ -7,7 +7,7 @@ with open('README.md', 'r') as fh:
 setup(
     name='argparse-color-formatter',
     url='https://github.com/arrai-innovations/argparse-color-formatter/',
-    version='1.2.2.post2',
+    version='1.2.2.post3',
     description='a `formatter_class` for `argparse` that deals with ANSI colour escapes.'
                 ' Specifically, this formatter does not count escape characters as displayed'
                 ' characters when wrapping `argparse`\'s help text into the terminal.',
@@ -28,6 +28,8 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'License :: OSI Approved :: BSD License',
         'Environment :: Console',
         'Intended Audience :: Developers',
