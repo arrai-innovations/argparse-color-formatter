@@ -28,6 +28,11 @@ executors:
         LANG: C.UTF-8
     docker:
      - image: cimg/python:3.8
+  python39:
+    environment:
+        LANG: C.UTF-8
+    docker:
+     - image: cimg/python:3.9
 jobs:
   pythontests:
     parameters:
@@ -115,6 +120,10 @@ workflows:
           name: python38
           context: arrai-global
           executor: python38
+      - pythontests:
+          name: python39
+          context: arrai-global
+          executor: python39
       - flake8/flake8:
           name: flake8
           context: arrai-global
