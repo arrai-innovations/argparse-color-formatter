@@ -61,6 +61,15 @@ color_names = OrderedDict(
     (k, v(k)) for k, v in colors.items()
 )
 
+if sys.version_info >= (3, 10):
+    color_kwargs.update({
+        'options_string': 'options',
+    })
+else:
+    color_kwargs.update({
+        'options_string': 'optional arguments',
+    })
+
 
 def rainbow_text(text):
     retval = []
@@ -215,7 +224,7 @@ class TestColorArgsParserOutput(TestCase):
                 '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
                 '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful} help text\n'
                 '\n'
                 'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(
@@ -265,7 +274,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'
@@ -298,7 +307,7 @@ class TestColorArgsParserOutput(TestCase):
                 '  sixth       {color} used when making rainbow, {typically} this would be {indigo}.\n'
                 '  seventh     {color} used when making rainbow, {typically} this would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful} help text\n'
                 '\n'
                 'This epilog has some {colorful} escapes in it as well and should not wrap on 80.\n'.format(
@@ -349,7 +358,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'
@@ -400,7 +409,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'
@@ -452,7 +461,7 @@ class TestColorArgsParserOutput(TestCase):
                 '              rainbow, {typically} this\n'
                 '              would be {violet}.\n'
                 '\n'
-                'optional arguments:\n'
+                '{options_string}:\n'
                 '  -h, --help  displays this {colorful}\n'
                 '              help text\n'
                 '\n'
