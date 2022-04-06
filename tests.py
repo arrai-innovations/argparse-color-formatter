@@ -24,8 +24,7 @@ except ImportError:
     import contextlib
 
 
-    # noqa: E303
-    @contextlib.contextmanager
+    @contextlib.contextmanager  # noqa: E303
     def redirect_stdout(target):
         original = sys.stdout
         sys.stdout = target
@@ -33,8 +32,7 @@ except ImportError:
         sys.stdout = original
 
 
-    # noqa: E303
-    @contextlib.contextmanager
+    @contextlib.contextmanager  # noqa: E303
     def redirect_stderr(target):
         original = sys.stderr
         sys.stderr = target
