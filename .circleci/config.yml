@@ -33,6 +33,11 @@ executors:
         LANG: C.UTF-8
     docker:
      - image: cimg/python:3.9
+  python310:
+    environment:
+        LANG: C.UTF-8
+    docker:
+     - image: cimg/python:3.10
 jobs:
   pythontests:
     parameters:
@@ -124,6 +129,10 @@ workflows:
           name: python39
           context: arrai-global
           executor: python39
+      - pythontests:
+          name: python310
+          context: arrai-global
+          executor: python310
       - flake8/flake8:
           name: flake8
           context: arrai-global
