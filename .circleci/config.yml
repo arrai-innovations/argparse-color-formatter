@@ -7,27 +7,27 @@ executors:
     environment:
         LANG: C.UTF-8
     docker:
-     - image: circleci/python:2.7
+     - image: cimg/python:2.7
   python35:
     environment:
         LANG: C.UTF-8
     docker:
-     - image: circleci/python:3.5
+     - image: cimg/python:3.5
   python36:
     environment:
         LANG: C.UTF-8
     docker:
-     - image: circleci/python:3.6
+     - image: cimg/python:3.6
   python37:
     environment:
         LANG: C.UTF-8
     docker:
-     - image: circleci/python:3.7
+     - image: cimg/python:3.7
   python38:
     environment:
         LANG: C.UTF-8
     docker:
-     - image: circleci/python:3.8
+     - image: cimg/python:3.8
 jobs:
   pythontests:
     parameters:
@@ -38,7 +38,11 @@ jobs:
     executor: <<parameters.executor>>
     steps:
       - checkout
-      - run: sudo apt-get install rsync
+      - run:
+          description: "Install additional packages."
+          command: |
+            sudo apt-get update
+            sudo apt-get install rsync
       - utils/add_ssh_config:
           host: "docs"
           hostname: ${DOCS_HOST}
