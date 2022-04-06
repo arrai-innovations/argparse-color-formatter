@@ -5,36 +5,19 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 [![PYPI](https://img.shields.io/pypi/v/argparse-color-formatter?style=for-the-badge)](https://pypi.org/project/argparse-color-formatter/)
 
-###### master
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python310.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python310.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python310/)
 
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python310.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python310.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/htmlcov_python310/)
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python39.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python39.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python39/)
 
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python39.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python39.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/htmlcov_python39/)
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python38.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python38.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python38/)
 
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python38.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python38.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/htmlcov_python38/)
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python37/)
 
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/htmlcov_python37/)
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python36.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python36.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python36/)
 
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python36.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python36.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/htmlcov_python36/)
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python27/)
 
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/htmlcov_python27/)
-
-![Flake8](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/master/flake8.svg)
-
-###### develop
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python310.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python310.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/htmlcov_python310/)
-
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python39.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python39.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/htmlcov_python39/)
-
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python38.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python38.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/htmlcov_python38/)
-
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python37.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python37.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/htmlcov_python37/)
-
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python36.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python36.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/htmlcov_python36/)
-
-![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python27.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/python27.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/htmlcov_python27/)
-
-![Flake8](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/develop/flake8.svg)
+![Flake8](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/flake8.svg)
 
 ## Install
 
