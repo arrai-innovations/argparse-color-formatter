@@ -28,7 +28,7 @@ executors:
         docker:
             - image: cimg/python:3.11
 jobs:
-    pythontests:
+    tests:
         parameters:
             executor:
                 description: "Execution environment for the test job."
@@ -92,37 +92,37 @@ jobs:
                 remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
                 host: docs
 workflows:
-    test:
+    tests:
         jobs:
-            - pythontests:
+            - tests:
                 name: python27
                 context: arrai-global
                 executor: python27
-            - pythontests:
+            - tests:
                 name: python35
                 context: arrai-global
                 executor: python35
-            - pythontests:
+            - tests:
                 name: python36
                 context: arrai-global
                 executor: python36
-            - pythontests:
+            - tests:
                 name: python37
                 context: arrai-global
                 executor: python37
-            - pythontests:
+            - tests:
                 name: python38
                 context: arrai-global
                 executor: python38
-            - pythontests:
+            - tests:
                 name: python39
                 context: arrai-global
                 executor: python39
-            - pythontests:
+            - tests:
                 name: python310
                 context: arrai-global
                 executor: python310
-            - pythontests:
+            - tests:
                  name: python311
                  context: arrai-global
                  executor: python311
