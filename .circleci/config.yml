@@ -123,12 +123,24 @@ workflows:
                 context: arrai-global
                 executor: python310
             - tests:
-                 name: python311
-                 context: arrai-global
-                 executor: python311
+                name: python311
+                context: arrai-global
+                executor: python311
     lint:
         jobs:
             - flake8/flake8:
-                 name: flake8
-                 context: arrai-global
-                 wd: ~/project
+                name: flake8
+                context: arrai-global
+                wd: ~/project
+                filters:
+                    branches:
+                        only:
+                            - main
+            - flake8/flake8:
+                name: flake8-no-badge
+                create_badges: false
+                wd: ~/project
+                filters:
+                    branches:
+                        ignore:
+                            - main
