@@ -4,47 +4,36 @@ orbs:
   flake8: arrai/flake8@11.0.1
 executors:
   python27:
-    environment:
-        LANG: C.UTF-8
     docker:
      - image: cimg/python:2.7
   python35:
-    environment:
-        LANG: C.UTF-8
     docker:
      - image: cimg/python:3.5
   python36:
-    environment:
-        LANG: C.UTF-8
     docker:
      - image: cimg/python:3.6
   python37:
-    environment:
-        LANG: C.UTF-8
     docker:
      - image: cimg/python:3.7
   python38:
-    environment:
-        LANG: C.UTF-8
     docker:
      - image: cimg/python:3.8
   python39:
-    environment:
-        LANG: C.UTF-8
     docker:
      - image: cimg/python:3.9
   python310:
-    environment:
-        LANG: C.UTF-8
     docker:
      - image: cimg/python:3.10
+  python311:
+    docker:
+     - image: cimg/python:3.11
 jobs:
   pythontests:
     parameters:
       executor:
         description: "Execution environment for the test job."
         type: executor
-        default: python37
+        default: python311
     executor: <<parameters.executor>>
     steps:
       - checkout
@@ -133,6 +122,10 @@ workflows:
           name: python310
           context: arrai-global
           executor: python310
+      - pythontests:
+          name: python311
+          context: arrai-global
+          executor: python311
       - flake8/flake8:
           name: flake8
           context: arrai-global
