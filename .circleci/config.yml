@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-  utils: arrai/utils@1.8.0
-  flake8: arrai/flake8@11.0.1
+  utils: arrai/utils@1.11.0
+  flake8: arrai/flake8@16.0.0
 executors:
   python27:
     docker:
