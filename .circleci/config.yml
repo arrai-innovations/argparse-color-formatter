@@ -37,19 +37,18 @@ jobs:
         executor: <<parameters.executor>>
         steps:
             - checkout
-            - run:
-                  description: "Install additional packages."
-                  command: |
-                      sudo apt-get update
-                      sudo apt-get install rsync
-            - utils/add_ssh_config:
-                  host: "docs"
-                  hostname: ${DOCS_HOST}
-                  port: ${DOCS_PORT}
-                  user: ${DOCS_USER}
-            - utils/make_status_shield:
-                 status: running
-                 color: lightblue
+            - when:
+                condition:
+                    equal: [ main, << pipeline.git.branch >> ]
+                steps:
+                    - utils/add_ssh_config:
+                        host: "docs"
+                        hostname: ${DOCS_HOST}
+                        port: ${DOCS_PORT}
+                        user: ${DOCS_USER}
+                    - utils/make_status_shield:
+                        status: running
+                        color: lightblue
             - run: pip install -r requirements.txt -r test_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
             - run: coverage run setup.py test
             - run:
@@ -62,14 +61,6 @@ jobs:
                 folder: ./htmlcov/
                 remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
                 host: docs
-            - utils/make_coverage_shield:
-                when: always
-                link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/artifacts/${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}/"
-            - utils/rsync_file:
-                when: always
-                file: /tmp/coverage.svg
-                remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.coverage.svg
-                host: docs
             - run:
                 when: always
                 command: pip freeze > ~/pip.freeze
@@ -78,19 +69,31 @@ jobs:
                 file: ~/pip.freeze
                 remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.freeze
                 host: docs
-            - utils/make_status_shield:
-                when: on_success
-                status: passed
-                color: brightgreen
-            - utils/make_status_shield:
-                when: on_fail
-                status: failed
-                color: red
-            - utils/rsync_file:
-                when: always
-                file: ~/status.svg
-                remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
-                host: docs
+            - when:
+                condition:
+                    equal: [ main, << pipeline.git.branch >> ]
+                steps:
+                    - utils/make_coverage_shield:
+                        when: always
+                        link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/artifacts/${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}/"
+                    - utils/rsync_file:
+                        when: always
+                        file: /tmp/coverage.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.coverage.svg
+                        host: docs
+                    - utils/make_status_shield:
+                        when: on_success
+                        status: passed
+                        color: brightgreen
+                    - utils/make_status_shield:
+                        when: on_fail
+                        status: failed
+                        color: red
+                    - utils/rsync_file:
+                        when: always
+                        file: ~/status.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
+                        host: docs
 workflows:
     tests:
         jobs:
