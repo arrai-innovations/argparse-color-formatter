@@ -126,6 +126,8 @@ workflows:
                  name: python311
                  context: arrai-global
                  executor: python311
+    lint:
+        jobs:
             - flake8/flake8:
                  name: flake8
                  context: arrai-global
