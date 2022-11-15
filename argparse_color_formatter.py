@@ -10,6 +10,7 @@
 # some changes were also made to make this be python 2.7 compatible.
 
 
+__version__ = "1.2.2.post3"
 import re as _re
 from argparse import HelpFormatter
 from gettext import gettext as _
