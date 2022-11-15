@@ -133,6 +133,7 @@ workflows:
         jobs:
             - flake8/flake8:
                 name: flake8
+                flake8_cmd: pflake8
                 context: arrai-global
                 wd: ~/project
                 filters:
@@ -141,6 +142,7 @@ workflows:
                             - main
             - flake8/flake8:
                 name: flake8-no-badge
+                flake8_cmd: pflake8
                 create_badges: false
                 wd: ~/project
                 filters:

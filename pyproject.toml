@@ -1,0 +1,4 @@
+[tool.flake8]
+exclude = ".git,*venv*"
+max-complexity = 10
+max-line-length = 120
