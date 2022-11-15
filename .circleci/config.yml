@@ -1,132 +1,149 @@
 version: 2.1
 orbs:
-  utils: arrai/utils@1.8.0
-  flake8: arrai/flake8@11.0.1
+    utils: arrai/utils@1.11.0
+    flake8: arrai/flake8@16.0.0
 executors:
-  python27:
-    docker:
-     - image: cimg/python:2.7
-  python35:
-    docker:
-     - image: cimg/python:3.5
-  python36:
-    docker:
-     - image: cimg/python:3.6
-  python37:
-    docker:
-     - image: cimg/python:3.7
-  python38:
-    docker:
-     - image: cimg/python:3.8
-  python39:
-    docker:
-     - image: cimg/python:3.9
-  python310:
-    docker:
-     - image: cimg/python:3.10
-  python311:
-    docker:
-     - image: cimg/python:3.11
+    python27:
+        docker:
+            - image: cimg/python:2.7
+    python35:
+        docker:
+            - image: cimg/python:3.5
+    python36:
+        docker:
+            - image: cimg/python:3.6
+    python37:
+        docker:
+            - image: cimg/python:3.7
+    python38:
+        docker:
+            - image: cimg/python:3.8
+    python39:
+        docker:
+            - image: cimg/python:3.9
+    python310:
+        docker:
+            - image: cimg/python:3.10
+    python311:
+        docker:
+            - image: cimg/python:3.11
 jobs:
-  pythontests:
-    parameters:
-      executor:
-        description: "Execution environment for the test job."
-        type: executor
-        default: python311
-    executor: <<parameters.executor>>
-    steps:
-      - checkout
-      - run:
-          description: "Install additional packages."
-          command: |
-            sudo apt-get update
-            sudo apt-get install rsync
-      - utils/add_ssh_config:
-          host: "docs"
-          hostname: ${DOCS_HOST}
-          port: ${DOCS_PORT}
-          user: ${DOCS_USER}
-      - utils/make_status_shield:
-          status: running
-          color: lightblue
-      - run: pip install -r requirements.txt -r test_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
-      - run: coverage run setup.py test
-      - run:
-          when: always
-          command: |
-            coverage html
-            coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}' >> /tmp/.coveragep
-      - utils/rsync_folder:
-          when: always
-          folder: ./htmlcov/
-          remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
-          host: docs
-      - utils/make_coverage_shield:
-          when: always
-          link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/artifacts/${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}/"
-      - utils/rsync_file:
-          when: always
-          file: /tmp/coverage.svg
-          remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.coverage.svg
-          host: docs
-      - run:
-          when: always
-          command: pip freeze > ~/pip.freeze
-      - utils/rsync_file:
-          when: always
-          file: ~/pip.freeze
-          remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.freeze
-          host: docs
-      - utils/make_status_shield:
-          when: on_success
-          status: passed
-          color: brightgreen
-      - utils/make_status_shield:
-          when: on_fail
-          status: failed
-          color: red
-      - utils/rsync_file:
-          when: always
-          file: ~/status.svg
-          remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
-          host: docs
+    tests:
+        parameters:
+            executor:
+                description: "Execution environment for the test job."
+                type: executor
+                default: python311
+        executor: <<parameters.executor>>
+        steps:
+            - checkout
+            - when:
+                condition:
+                    equal: [ main, << pipeline.git.branch >> ]
+                steps:
+                    - utils/add_ssh_config:
+                        host: "docs"
+                        hostname: ${DOCS_HOST}
+                        port: ${DOCS_PORT}
+                        user: ${DOCS_USER}
+                    - utils/make_status_shield:
+                        status: running
+                        color: lightblue
+            - run: pip install -r requirements.txt -r test_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
+            - run: coverage run setup.py test
+            - run:
+                when: always
+                command: |
+                    coverage html
+                    coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}' >> /tmp/.coveragep
+            - utils/rsync_folder:
+                when: always
+                folder: ./htmlcov/
+                remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
+                host: docs
+            - run:
+                when: always
+                command: pip freeze > ~/pip.freeze
+            - utils/rsync_file:
+                when: always
+                file: ~/pip.freeze
+                remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.freeze
+                host: docs
+            - when:
+                condition:
+                    equal: [ main, << pipeline.git.branch >> ]
+                steps:
+                    - utils/make_coverage_shield:
+                        when: always
+                        link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/artifacts/${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}/"
+                    - utils/rsync_file:
+                        when: always
+                        file: /tmp/coverage.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.coverage.svg
+                        host: docs
+                    - utils/make_status_shield:
+                        when: on_success
+                        status: passed
+                        color: brightgreen
+                    - utils/make_status_shield:
+                        when: on_fail
+                        status: failed
+                        color: red
+                    - utils/rsync_file:
+                        when: always
+                        file: ~/status.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
+                        host: docs
 workflows:
-  test:
-    jobs:
-      - pythontests:
-          name: python27
-          context: arrai-global
-          executor: python27
-      - pythontests:
-          name: python35
-          context: arrai-global
-          executor: python35
-      - pythontests:
-          name: python36
-          context: arrai-global
-          executor: python36
-      - pythontests:
-          name: python37
-          context: arrai-global
-          executor: python37
-      - pythontests:
-          name: python38
-          context: arrai-global
-          executor: python38
-      - pythontests:
-          name: python39
-          context: arrai-global
-          executor: python39
-      - pythontests:
-          name: python310
-          context: arrai-global
-          executor: python310
-      - pythontests:
-          name: python311
-          context: arrai-global
-          executor: python311
-      - flake8/flake8:
-          name: flake8
-          context: arrai-global
-          wd: ~/project
+    tests:
+        jobs:
+            - tests:
+                name: python27
+                context: arrai-global
+                executor: python27
+            - tests:
+                name: python35
+                context: arrai-global
+                executor: python35
+            - tests:
+                name: python36
+                context: arrai-global
+                executor: python36
+            - tests:
+                name: python37
+                context: arrai-global
+                executor: python37
+            - tests:
+                name: python38
+                context: arrai-global
+                executor: python38
+            - tests:
+                name: python39
+                context: arrai-global
+                executor: python39
+            - tests:
+                name: python310
+                context: arrai-global
+                executor: python310
+            - tests:
+                name: python311
+                context: arrai-global
+                executor: python311
+    lint:
+        jobs:
+            - flake8/flake8:
+                name: flake8
+                context: arrai-global
+                wd: ~/project
+                filters:
+                    branches:
+                        only:
+                            - main
+            - flake8/flake8:
+                name: flake8-no-badge
+                create_badges: false
+                wd: ~/project
+                filters:
+                    branches:
+                        ignore:
+                            - main
