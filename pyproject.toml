@@ -9,3 +9,19 @@ extend-ignore = [
 
 [tool.black]
 line-length = 120
+
+[tool.coverage.run]
+branch = true
+include = [
+    "argparse_color_formatter.py",
+    "tests.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if __name__ == '__main__'",
+    "if six.PY2:",
+    "if PY2:",
+    "raise NotImplementedError",
+    "except ImportError",
+]
