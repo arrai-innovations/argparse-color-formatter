@@ -21,17 +21,17 @@ from colors import strip_color
 
 class ColorHelpFormatter(HelpFormatter):
     def _fill_text(self, text, width, indent):
-        text = self._whitespace_matcher.sub(' ', text).strip()
+        text = self._whitespace_matcher.sub(" ", text).strip()
         return ColorTextWrapper(width=width, initial_indent=indent, subsequent_indent=indent).fill(text)
 
     def _split_lines(self, text, width):
-        text = self._whitespace_matcher.sub(' ', text).strip()
+        text = self._whitespace_matcher.sub(" ", text).strip()
         return ColorTextWrapper(width=width).wrap(text)
 
     # modified upstream code, not going to refactor for complexity.
     def _format_usage(self, usage, actions, groups, prefix):  # noqa: C901
         if prefix is None:
-            prefix = _('usage: ')
+            prefix = _("usage: ")
 
         # if usage is specified, use that
         if usage is not None:
@@ -39,11 +39,11 @@ class ColorHelpFormatter(HelpFormatter):
 
         # if no optionals or positionals are available, usage is just prog
         elif usage is None and not actions:
-            usage = '%(prog)s' % dict(prog=self._prog)
+            usage = "%(prog)s" % dict(prog=self._prog)
 
         # if optionals and positionals are available, calculate usage
         elif usage is None:
-            prog = '%(prog)s' % dict(prog=self._prog)
+            prog = "%(prog)s" % dict(prog=self._prog)
 
             # split optionals from positionals
             optionals = []
@@ -57,20 +57,20 @@ class ColorHelpFormatter(HelpFormatter):
             # build full usage string
             format = self._format_actions_usage
             action_usage = format(optionals + positionals, groups)
-            usage = ' '.join([s for s in [prog, action_usage] if s])
+            usage = " ".join([s for s in [prog, action_usage] if s])
 
             # wrap the usage parts if it's too long
             text_width = self._width - self._current_indent
             if len(prefix) + len(strip_color(usage)) > text_width:
 
                 # break usage into wrappable parts
-                part_regexp = r'\(.*?\)+|\[.*?\]+|\S+'
+                part_regexp = r"\(.*?\)+|\[.*?\]+|\S+"
                 opt_usage = format(optionals, groups)
                 pos_usage = format(positionals, groups)
                 opt_parts = _re.findall(part_regexp, opt_usage)
                 pos_parts = _re.findall(part_regexp, pos_usage)
-                assert ' '.join(opt_parts) == opt_usage
-                assert ' '.join(pos_parts) == pos_usage
+                assert " ".join(opt_parts) == opt_usage
+                assert " ".join(pos_parts) == pos_usage
 
                 # helper for wrapping lines
                 def get_lines(parts, indent, prefix=None):
@@ -82,21 +82,21 @@ class ColorHelpFormatter(HelpFormatter):
                         line_len = len(indent) - 1
                     for part in parts:
                         if line_len + 1 + len(strip_color(part)) > text_width and line:
-                            lines.append(indent + ' '.join(line))
+                            lines.append(indent + " ".join(line))
                             line = []
                             line_len = len(indent) - 1
                         line.append(part)
                         line_len += len(strip_color(part)) + 1
                     if line:
-                        lines.append(indent + ' '.join(line))
+                        lines.append(indent + " ".join(line))
                     if prefix is not None:
-                        lines[0] = lines[0][len(indent):]
+                        lines[0] = lines[0][len(indent) :]
                     return lines
 
                 # if prog is short, follow it with optionals or positionals
                 len_prog = len(strip_color(prog))
                 if len(prefix) + len_prog <= 0.75 * text_width:
-                    indent = ' ' * (len(prefix) + len_prog + 1)
+                    indent = " " * (len(prefix) + len_prog + 1)
                     if opt_parts:
                         lines = get_lines([prog] + opt_parts, indent, prefix)
                         lines.extend(get_lines(pos_parts, indent))
@@ -107,7 +107,7 @@ class ColorHelpFormatter(HelpFormatter):
 
                 # if prog is long, put it on its own line
                 else:
-                    indent = ' ' * len(prefix)
+                    indent = " " * len(prefix)
                     parts = opt_parts + pos_parts
                     lines = get_lines(parts, indent)
                     if len(lines) > 1:
@@ -117,10 +117,10 @@ class ColorHelpFormatter(HelpFormatter):
                     lines = [prog] + lines
 
                 # join lines into usage
-                usage = '\n'.join(lines)
+                usage = "\n".join(lines)
 
         # prefix with 'usage:'
-        return '%s%s\n\n' % (prefix, usage)
+        return "%s%s\n\n" % (prefix, usage)
 
 
 class ColorTextWrapper(TextWrapper):
@@ -172,7 +172,7 @@ class ColorTextWrapper(TextWrapper):
 
             # First chunk on line is whitespace -- drop it, unless this
             # is the very beginning of the text (ie. no lines started yet).
-            if self.drop_whitespace and strip_color(chunks[-1]).strip() == '' and lines:
+            if self.drop_whitespace and strip_color(chunks[-1]).strip() == "" and lines:
                 del chunks[-1]
 
             while chunks:
@@ -196,28 +196,28 @@ class ColorTextWrapper(TextWrapper):
                 cur_len = sum(map(len, cur_line))
 
             # If the last chunk on this line is all whitespace, drop it.
-            if self.drop_whitespace and cur_line and strip_color(cur_line[-1]).strip() == '':
+            if self.drop_whitespace and cur_line and strip_color(cur_line[-1]).strip() == "":
                 cur_len -= len(strip_color(cur_line[-1]))
                 del cur_line[-1]
 
             if cur_line:
                 if six.PY2:
-                    lines.append(indent + ''.join(cur_line))
+                    lines.append(indent + "".join(cur_line))
                 else:
-                    if (self.max_lines is None or
-                        len(lines) + 1 < self.max_lines or
-                        (not chunks or
-                         self.drop_whitespace and
-                         len(chunks) == 1 and
-                         not chunks[0].strip()) and cur_len <= width):
+                    if (
+                        self.max_lines is None
+                        or len(lines) + 1 < self.max_lines
+                        or (not chunks or self.drop_whitespace and len(chunks) == 1 and not chunks[0].strip())
+                        and cur_len <= width
+                    ):
                         # Convert current line back to a string and store it in
                         # list of all lines (return value).
-                        lines.append(indent + ''.join(cur_line))
+                        lines.append(indent + "".join(cur_line))
                     else:
                         while cur_line:
                             if strip_color(cur_line[-1]).strip() and cur_len + len(self.placeholder) <= width:
                                 cur_line.append(self.placeholder)
-                                lines.append(indent + ''.join(cur_line))
+                                lines.append(indent + "".join(cur_line))
                                 break
                             cur_len -= len(strip_color(cur_line[-1]))
                             del cur_line[-1]
@@ -236,9 +236,9 @@ class ColorTextWrapper(TextWrapper):
 class ColorRawDescriptionHelpFormatter(ColorHelpFormatter):
     def _fill_text(self, text, width, indent):
         if six.PY2:
-            return ''.join(indent + line for line in text.splitlines(True))
+            return "".join(indent + line for line in text.splitlines(True))
         else:
-            return ''.join(indent + line for line in text.splitlines(keepends=True))
+            return "".join(indent + line for line in text.splitlines(keepends=True))
 
 
 class ColorRawTextHelpFormatter(ColorRawDescriptionHelpFormatter):
