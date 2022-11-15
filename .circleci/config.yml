@@ -2,6 +2,8 @@ version: 2.1
 orbs:
     utils: arrai/utils@1.11.0
     flake8: arrai/flake8@16.0.0
+    pypi: arrai/pypi@2.0.1
+    github: arrai/github@2.0.1
 executors:
     python27:
         docker:
@@ -28,6 +30,28 @@ executors:
         docker:
             - image: cimg/python:3.11
 jobs:
+    build:
+        executor: python311
+        resource_class: small
+        steps:
+            - checkout
+            - run:
+                name: Verify tag matches release version
+                command: |
+                    DIST_VERSION=$(python -c 'from argparse_color_formatter import __version__; print(__version__)')
+                    if [ -z "${DIST_VERSION}" ] || [ "${DIST_VERSION}" != "${CIRCLE_TAG}" ]; then
+                        echo "Git tag: ${CIRCLE_TAG} does not match the release version: ${DIST_VERSION}"
+                        exit 1
+                    fi
+            - run:
+                name: Build Package
+                command: |
+                    pip install --user --upgrade build
+                    python -m build
+            - save_cache:
+                paths:
+                    - ~/project/dist
+                key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
     tests:
         parameters:
             executor:
@@ -95,7 +119,7 @@ jobs:
                         remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
                         host: docs
 workflows:
-    tests:
+    test_and_build:
         jobs:
             - tests:
                 name: python27
@@ -129,6 +153,42 @@ workflows:
                 name: python311
                 context: arrai-global
                 executor: python311
+            - build:
+                name: build
+                requires:
+                    - python27
+                    - python35
+                    - python36
+                    - python37
+                    - python38
+                    - python39
+                    - python310
+                    - python311
+                filters:
+                    tags:
+                        only: /.*/
+                    branches:
+                        ignore: /.*/
+            - github/create_release:
+                name: release_on_github
+                context: arrai-global
+                requires:
+                    - build
+                filters:
+                    tags:
+                        only: /.*/
+                    branches:
+                        ignore: /.*/
+            - pypi/upload_release:
+                name: publish
+                context: arrai-public-package-publishing
+                requires:
+                    - build
+                filters:
+                    tags:
+                        only: /.*/
+                    branches:
+                        ignore: /.*
     lint:
         jobs:
             - flake8/flake8:
