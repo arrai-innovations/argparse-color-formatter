@@ -1,3 +1,45 @@
+[build-system]
+requires = ["setuptools>=65.5.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "argparse-color-formatter"
+version = "1.2.2.post3"
+description = """\
+    A `formatter_class` for `argparse` that deals with ANSI colour escapes. \
+    Specifically, this formatter does not count escape characters as displayed \
+    characters when wrapping `argparse`'s help text into the terminal.\
+    """
+readme = "README.md"
+requires-python = ">=2.7"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Arrai Innovations", email = "support@arrai.com" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 2",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: BSD License",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+repository = "https://github.com/arrai-innovations/argparse-color-formatter/"
+
+[tool.setuptools.dynamic]
+dependencies = { file = 'requirements.txt' }
+
 [tool.flake8]
 exclude = ".git,*venv*"
 max-complexity = 10
