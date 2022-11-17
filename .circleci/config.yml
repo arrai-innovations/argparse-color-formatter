@@ -125,34 +125,74 @@ workflows:
                 name: python27
                 context: arrai-global
                 executor: python27
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - tests:
                 name: python35
                 context: arrai-global
                 executor: python35
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - tests:
                 name: python36
                 context: arrai-global
                 executor: python36
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - tests:
                 name: python37
                 context: arrai-global
                 executor: python37
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - tests:
                 name: python38
                 context: arrai-global
                 executor: python38
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - tests:
                 name: python39
                 context: arrai-global
                 executor: python39
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - tests:
                 name: python310
                 context: arrai-global
                 executor: python310
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - tests:
                 name: python311
                 context: arrai-global
                 executor: python311
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - build:
                 name: build
                 requires:
@@ -188,7 +228,7 @@ workflows:
                     tags:
                         only: /.*/
                     branches:
-                        ignore: /.*
+                        ignore: /.*/
     lint:
         jobs:
             - flake8/flake8:
