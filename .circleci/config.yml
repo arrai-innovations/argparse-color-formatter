@@ -47,7 +47,7 @@ jobs:
                 name: Build Package
                 command: |
                     pip install --user --upgrade build
-                    python -m build
+                    python -m build --wheel
             - save_cache:
                 paths:
                     - ~/project/dist
