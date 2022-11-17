@@ -40,6 +40,10 @@ repository = "https://github.com/arrai-innovations/argparse-color-formatter/"
 dependencies = { file = "requirements.txt" }
 version = { attr = "argparse_color_formatter.__version__" }
 
+# This might require revisiting when distutils is removed.
+[tool.distutils.bdist_wheel]
+universal = true
+
 [tool.flake8]
 exclude = ".git,*venv*"
 max-complexity = 10
