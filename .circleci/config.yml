@@ -52,6 +52,19 @@ jobs:
                 paths:
                     - ~/project/dist
                 key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+    install:
+        parameters:
+            executor:
+                description: "Execution environment for the install test job."
+                type: executor
+                default: python311
+        executor: <<parameters.executor>>
+        steps:
+            - restore_cache:
+                keys:
+                    - build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+            - run: pip install ~/project/dist/*.whl
+            - run: python -c 'from argparse_color_formatter import ColorHelpFormatter' 
     tests:
         parameters:
             executor:
@@ -205,15 +218,102 @@ workflows:
                     - python310
                     - python311
                 filters:
+                    branches:
+                        only: /.*/
                     tags:
                         only: /.*/
+            - install:
+                name: python27_install
+                executor: python27
+                requires:
+                    - build
+                filters:
                     branches:
-                        ignore: /.*/
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python35_install
+                executor: python35
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python36_install
+                executor: python36
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python37_install
+                executor: python37
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python38_install
+                executor: python38
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python39_install
+                executor: python39
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python310_install
+                executor: python310
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
+            - install:
+                name: python311_install
+                executor: python311
+                requires:
+                    - build
+                filters:
+                    branches:
+                        only: /.*/
+                    tags:
+                        only: /.*/
             - github/create_release:
                 name: release_on_github
                 context: arrai-global
                 requires:
-                    - build
+                    - python27_install
+                    - python35_install
+                    - python36_install
+                    - python37_install
+                    - python38_install
+                    - python39_install
+                    - python310_install
+                    - python311_install
                 filters:
                     tags:
                         only: /.*/
@@ -223,7 +323,14 @@ workflows:
                 name: publish
                 context: arrai-public-package-publishing
                 requires:
-                    - build
+                    - python27_install
+                    - python35_install
+                    - python36_install
+                    - python37_install
+                    - python38_install
+                    - python39_install
+                    - python310_install
+                    - python311_install
                 filters:
                     tags:
                         only: /.*/
