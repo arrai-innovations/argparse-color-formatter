@@ -36,6 +36,10 @@ jobs:
         steps:
             - checkout
             - run:
+                name: Install Requirements
+                command: |
+                    pip install --user --upgrade build six wheel setuptools
+            - run:
                 name: Verify tag matches release version
                 command: |
                     DIST_VERSION=$(python -c 'from argparse_color_formatter import __version__; print(__version__)')
@@ -45,9 +49,7 @@ jobs:
                     fi
             - run:
                 name: Build Package
-                command: |
-                    pip install --user --upgrade build
-                    python -m build --wheel
+                command: python -m build --wheel
             - save_cache:
                 paths:
                     - ~/project/dist
