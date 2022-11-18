@@ -36,7 +36,7 @@ jobs:
         steps:
             - checkout
             - run:
-                name: Install Requirements
+                name: "Install build requirements"
                 command: |
                     pip install --user --upgrade build wheel
                     pip install --user -r requirements.txt
@@ -44,7 +44,7 @@ jobs:
                 condition: << pipeline.git.tag >>
                 steps:
                     - run:
-                        name: Verify tag matches release version
+                        name: "Verify scm tag matches software version"
                         command: |
                             DIST_VERSION=$(python -c 'from argparse_color_formatter import __version__; print(__version__)')
                             if [ -z "${DIST_VERSION}" ] || [ "${DIST_VERSION}" != "${CIRCLE_TAG}" ]; then
@@ -52,7 +52,7 @@ jobs:
                                 exit 1
                             fi
             - run:
-                name: Build Package
+                name: "Build Package"
                 command: python -m build --wheel
             - save_cache:
                 paths:
@@ -70,8 +70,12 @@ jobs:
             - restore_cache:
                 keys:
                     - build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
-            - run: pip install ~/project/dist/*.whl
-            - run: python -c 'from argparse_color_formatter import ColorHelpFormatter' 
+            - run:
+                  name: "Install wheel"
+                  command: pip install ~/project/dist/*.whl
+            - run:
+                  name: "Import library"
+                  command: python -c 'from argparse_color_formatter import ColorHelpFormatter' 
     tests:
         parameters:
             executor:
@@ -94,8 +98,12 @@ jobs:
                     - utils/make_status_shield:
                         status: running
                         color: lightblue
-            - run: pip install -r requirements.txt -r test_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
-            - run: coverage run -m unittest tests
+            - run:
+                name: "Install test requirements"
+                command: pip install -r requirements.txt -r test_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
+            - run:
+                name: "Run tests"
+                command: coverage run -m unittest tests
             - run:
                 when: always
                 command: |
@@ -107,6 +115,7 @@ jobs:
                 remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
                 host: docs
             - run:
+                name: "Create freeze file"
                 when: always
                 command: pip freeze > ~/pip.freeze
             - utils/rsync_file:
