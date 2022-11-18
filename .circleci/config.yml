@@ -40,14 +40,17 @@ jobs:
                 command: |
                     pip install --user --upgrade build wheel
                     pip install --user -r requirements.txt
-            - run:
-                name: Verify tag matches release version
-                command: |
-                    DIST_VERSION=$(python -c 'from argparse_color_formatter import __version__; print(__version__)')
-                    if [ -z "${DIST_VERSION}" ] || [ "${DIST_VERSION}" != "${CIRCLE_TAG}" ]; then
-                        echo "Git tag: ${CIRCLE_TAG} does not match the release version: ${DIST_VERSION}"
-                        exit 1
-                    fi
+            - when:
+                condition: << pipeline.git.tag >>
+                steps:
+                    - run:
+                        name: Verify tag matches release version
+                        command: |
+                            DIST_VERSION=$(python -c 'from argparse_color_formatter import __version__; print(__version__)')
+                            if [ -z "${DIST_VERSION}" ] || [ "${DIST_VERSION}" != "${CIRCLE_TAG}" ]; then
+                                echo "Git tag: ${CIRCLE_TAG} does not match the release version: ${DIST_VERSION}"
+                                exit 1
+                            fi
             - run:
                 name: Build Package
                 command: python -m build --wheel
