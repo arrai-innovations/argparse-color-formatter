@@ -65,6 +65,7 @@ jobs:
                 type: executor
                 default: python311
         executor: <<parameters.executor>>
+        resource_class: small
         steps:
             - restore_cache:
                 keys:
@@ -78,6 +79,7 @@ jobs:
                 type: executor
                 default: python311
         executor: <<parameters.executor>>
+        resource_class: small
         steps:
             - checkout
             - when:
