@@ -38,7 +38,8 @@ jobs:
             - run:
                 name: Install Requirements
                 command: |
-                    pip install --user --upgrade build six wheel setuptools
+                    pip install --user --upgrade build wheel
+                    pip install --user -r requirements.txt
             - run:
                 name: Verify tag matches release version
                 command: |
