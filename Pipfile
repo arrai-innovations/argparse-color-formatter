@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+test = "sh -c 'coverage run -m unittest tests && coverage report'"
+build = "python -m build --wheel"
+
+[packages]
+# Add module dependencies to `requirements.txt`
+argparse_color_formatter = {path = ".", editable = true}
+
+[dev-packages]
+# sync with dev_requirements.txt,
+#  as older pipenv versions don't support editable installations with pyproject.toml
+#  and pipenv doesn't support referencing these from a requirements.txt
+build = "*"
+coverage = ">=7.0.0,<8.0.0"
+coverage-badge = ">=1.1.0,<2.0.0"
+wheel = "*"
+
+
+[requires]
+python_version = "3.12"

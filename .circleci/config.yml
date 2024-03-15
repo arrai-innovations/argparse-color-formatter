@@ -1,19 +1,10 @@
 version: 2.1
 orbs:
-    utils: arrai/utils@1.11.0
-    flake8: arrai/flake8@16.0.0
-    pypi: arrai/pypi@2.0.1
-    github: arrai/github@2.0.1
+    utils: arrai/utils@1.16.3
+    flake8: arrai/flake8@20.0.2
+    pypi: arrai/pypi@3.1.0
+    github: arrai/github@3.0.0
 executors:
-    python27:
-        docker:
-            - image: cimg/python:2.7
-    python35:
-        docker:
-            - image: cimg/python:3.5
-    python36:
-        docker:
-            - image: cimg/python:3.6
     python37:
         docker:
             - image: cimg/python:3.7
@@ -29,17 +20,19 @@ executors:
     python311:
         docker:
             - image: cimg/python:3.11
+    python312:
+        docker:
+            - image: cimg/python:3.12
 jobs:
     build:
-        executor: python311
+        executor: python312
         resource_class: small
         steps:
             - checkout
             - run:
-                name: "Install build requirements"
+                name: "Install requirements"
                 command: |
-                    pip install --user --upgrade build wheel
-                    pip install --user -r requirements.txt
+                    pip install --user --upgrade -r requirements.txt -r dev_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
             - when:
                 condition: << pipeline.git.tag >>
                 steps:
@@ -63,7 +56,7 @@ jobs:
             executor:
                 description: "Execution environment for the install test job."
                 type: executor
-                default: python311
+                default: python312
         executor: <<parameters.executor>>
         resource_class: small
         steps:
@@ -75,32 +68,37 @@ jobs:
                   command: pip install ~/project/dist/*.whl
             - run:
                   name: "Import library"
-                  command: python -c 'from argparse_color_formatter import ColorHelpFormatter' 
+                  command: python -c 'from argparse_color_formatter import ColorHelpFormatter'
     tests:
         parameters:
             executor:
                 description: "Execution environment for the test job."
                 type: executor
-                default: python311
+                default: python312
+            version:
+                description: "Python version to test against."
+                type: string
+                default: "3.12"
         executor: <<parameters.executor>>
         resource_class: small
+        circleci_ip_ranges: true
         steps:
             - checkout
+            - utils/add_ssh_config
             - when:
                 condition:
                     equal: [ main, << pipeline.git.branch >> ]
                 steps:
-                    - utils/add_ssh_config:
-                        host: "docs"
-                        hostname: ${DOCS_HOST}
-                        port: ${DOCS_PORT}
-                        user: ${DOCS_USER}
                     - utils/make_status_shield:
                         status: running
                         color: lightblue
+                    - utils/rsync_file:
+                        file: ~/status.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
+                        host: docs
             - run:
                 name: "Install test requirements"
-                command: pip install -r requirements.txt -r test_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
+                command: pip install -r requirements.txt -r dev_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
             - run:
                 name: "Run tests"
                 command: coverage run -m unittest tests
@@ -117,7 +115,7 @@ jobs:
             - run:
                 name: "Create freeze file"
                 when: always
-                command: pip freeze > ~/pip.freeze
+                command: pipenv run pip freeze > ~/pip.freeze
             - utils/rsync_file:
                 when: always
                 file: ~/pip.freeze
@@ -152,36 +150,10 @@ workflows:
     test_and_build:
         jobs:
             - tests:
-                name: python27
-                context: arrai-global
-                executor: python27
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
-                name: python35
-                context: arrai-global
-                executor: python35
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
-                name: python36
-                context: arrai-global
-                executor: python36
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
                 name: python37
                 context: arrai-global
                 executor: python37
+                version: "3.7"
                 filters:
                     branches:
                         only: /.*/
@@ -191,6 +163,7 @@ workflows:
                 name: python38
                 context: arrai-global
                 executor: python38
+                version: "3.8"
                 filters:
                     branches:
                         only: /.*/
@@ -200,6 +173,7 @@ workflows:
                 name: python39
                 context: arrai-global
                 executor: python39
+                version: "3.9"
                 filters:
                     branches:
                         only: /.*/
@@ -209,6 +183,7 @@ workflows:
                 name: python310
                 context: arrai-global
                 executor: python310
+                version: "3.10"
                 filters:
                     branches:
                         only: /.*/
@@ -218,52 +193,31 @@ workflows:
                 name: python311
                 context: arrai-global
                 executor: python311
+                version: "3.11"
                 filters:
                     branches:
                         only: /.*/
                     tags:
                         only: /.*/
+            - tests:
+                  name: python312
+                  context: arrai-global
+                  executor: python312
+                  version: "3.12"
+                  filters:
+                      branches:
+                          only: /.*/
+                      tags:
+                          only: /.*/
             - build:
                 name: build
                 requires:
-                    - python27
-                    - python35
-                    - python36
                     - python37
                     - python38
                     - python39
                     - python310
                     - python311
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python27_install
-                executor: python27
-                requires:
-                    - build
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python35_install
-                executor: python35
-                requires:
-                    - build
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python36_install
-                executor: python36
-                requires:
-                    - build
+                    - python312
                 filters:
                     branches:
                         only: /.*/
@@ -319,18 +273,26 @@ workflows:
                         only: /.*/
                     tags:
                         only: /.*/
+            - install:
+                  name: python312_install
+                  executor: python312
+                  requires:
+                      - build
+                  filters:
+                      branches:
+                          only: /.*/
+                      tags:
+                          only: /.*/
             - github/create_release:
                 name: release_on_github
                 context: arrai-global
                 requires:
-                    - python27_install
-                    - python35_install
-                    - python36_install
                     - python37_install
                     - python38_install
                     - python39_install
                     - python310_install
                     - python311_install
+                    - python312_install
                 filters:
                     tags:
                         only: /.*/
@@ -340,14 +302,12 @@ workflows:
                 name: publish
                 context: arrai-public-package-publishing
                 requires:
-                    - python27_install
-                    - python35_install
-                    - python36_install
                     - python37_install
                     - python38_install
                     - python39_install
                     - python310_install
                     - python311_install
+                    - python312_install
                 filters:
                     tags:
                         only: /.*/
@@ -355,10 +315,11 @@ workflows:
                         ignore: /.*/
     lint:
         jobs:
-            - flake8/flake8:
+            - flake8/flake8_pipenv_fixed_ip:
                 name: flake8
                 flake8_cmd: pflake8
                 context: arrai-global
+                executor: python311
                 wd: ~/project
                 filters:
                     branches:
@@ -367,6 +328,7 @@ workflows:
             - flake8/flake8:
                 name: flake8-no-badge
                 flake8_cmd: pflake8
+                executor: python311
                 create_badges: false
                 wd: ~/project
                 filters:
