@@ -66,9 +66,9 @@ pipenv run build
 pipenv run test
 ```
 
-## Before & After
-ANSI colour escapes using the default `HelpFormatter`:
-![before screenshot](https://docs.arrai-dev.com/argparse-color-formatter/readme/before.png)
-
+## After & Before
 ANSI colour escapes using this library's new `ColorHelpFormatter`:
 ![after screenshot](https://docs.arrai-dev.com/argparse-color-formatter/readme/after.png)
+
+ANSI colour escapes using the default `HelpFormatter`:
+![before screenshot](https://docs.arrai-dev.com/argparse-color-formatter/readme/before.png)
