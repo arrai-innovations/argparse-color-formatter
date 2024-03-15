@@ -15,7 +15,11 @@ import re as _re
 from argparse import HelpFormatter
 from argparse import SUPPRESS
 from argparse import ArgumentDefaultsHelpFormatter
-from argparse import MetavarTypeHelpFormatter
+
+try:
+    from argparse import MetavarTypeHelpFormatter
+except ImportError:
+    pass
 from argparse import RawDescriptionHelpFormatter
 from argparse import RawTextHelpFormatter
 from argparse import ZERO_OR_MORE
@@ -352,5 +356,7 @@ class ColorArgumentDefaultsHelpFormatter(ColorHelpFormatterMixin, ArgumentDefaul
     pass
 
 
-class ColorMetavarTypeHelpFormatter(ColorHelpFormatterMixin, MetavarTypeHelpFormatter):
-    pass
+if "MetavarTypeHelpFormatter" in globals():
+
+    class ColorMetavarTypeHelpFormatter(ColorHelpFormatterMixin, MetavarTypeHelpFormatter):
+        pass
