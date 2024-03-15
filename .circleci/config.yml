@@ -90,6 +90,7 @@ jobs:
                 default: "3.12"
         executor: <<parameters.executor>>
         resource_class: small
+        circleci_ip_ranges: true
         steps:
             - checkout
             - when:
@@ -392,10 +393,11 @@ workflows:
                         ignore: /.*/
     lint:
         jobs:
-            - flake8/flake8:
+            - flake8/flake8_pipenv_fixed_ip:
                 name: flake8
                 flake8_cmd: pflake8
                 context: arrai-global
+                executor: python312
                 wd: ~/project
                 filters:
                     branches:
@@ -404,6 +406,7 @@ workflows:
             - flake8/flake8:
                 name: flake8-no-badge
                 flake8_cmd: pflake8
+                executor: python312
                 create_badges: false
                 wd: ~/project
                 filters:
