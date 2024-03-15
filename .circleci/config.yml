@@ -50,7 +50,7 @@ jobs:
             - save_cache:
                 paths:
                     - ~/project/dist
-                key: build-{{ checksum "/etc/os-release" }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+                key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
     install:
         parameters:
             executor:
@@ -62,7 +62,7 @@ jobs:
         steps:
             - restore_cache:
                 keys:
-                    - build-{{ checksum "/etc/os-release" }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+                    - build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - run:
                   name: "Install wheel"
                   command: pip install ~/project/dist/*.whl
@@ -302,6 +302,7 @@ workflows:
                 name: publish
                 context: arrai-public-package-publishing
                 executor: python312
+                cache_key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
                 requires:
                     - python37_install
                     - python38_install
