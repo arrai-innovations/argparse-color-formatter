@@ -44,9 +44,31 @@ parser = argparse.ArgumentParser(
 )
 ```
 
+## Development
+
+### Setup
+
+```shell
+pipenv install --dev
+pre-commit install
+pre-commit install --hook-type commit-msg
+```
+
+### Build
+
+```shell
+pipenv run build
+```
+
+### Test
+
+```shell
+pipenv run test
+```
+
 ## Before & After
 ANSI colour escapes using the default `HelpFormatter`:
 ![before screenshot](https://docs.arrai-dev.com/argparse-color-formatter/readme/before.png)
 
-ANSI colour escapes using this libraries new `ColorHelpFormatter`:
+ANSI colour escapes using this library's new `ColorHelpFormatter`:
 ![after screenshot](https://docs.arrai-dev.com/argparse-color-formatter/readme/after.png)
