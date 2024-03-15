@@ -50,7 +50,7 @@ jobs:
             - save_cache:
                 paths:
                     - ~/project/dist
-                key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+                key: build-{{ checksum "/etc/os-release" }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
     install:
         parameters:
             executor:
@@ -301,6 +301,7 @@ workflows:
             - pypi/upload_release:
                 name: publish
                 context: arrai-public-package-publishing
+                executor: python312
                 requires:
                     - python37_install
                     - python38_install
