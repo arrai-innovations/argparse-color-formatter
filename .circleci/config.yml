@@ -5,12 +5,6 @@ orbs:
     pypi: arrai/pypi@3.1.0
     github: arrai/github@3.0.0
 executors:
-    python35:
-        docker:
-            - image: cimg/python:3.5
-    python36:
-        docker:
-            - image: cimg/python:3.6
     python37:
         docker:
             - image: cimg/python:3.7
@@ -156,26 +150,6 @@ workflows:
     test_and_build:
         jobs:
             - tests:
-                name: python35
-                context: arrai-global
-                executor: python35
-                version: "3.5"
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
-                name: python36
-                context: arrai-global
-                executor: python36
-                version: "3.6"
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
                 name: python37
                 context: arrai-global
                 executor: python37
@@ -238,34 +212,12 @@ workflows:
             - build:
                 name: build
                 requires:
-                    - python35
-                    - python36
                     - python37
                     - python38
                     - python39
                     - python310
                     - python311
                     - python312
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python35_install
-                executor: python35
-                requires:
-                    - build
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python36_install
-                executor: python36
-                requires:
-                    - build
                 filters:
                     branches:
                         only: /.*/
@@ -335,8 +287,6 @@ workflows:
                 name: release_on_github
                 context: arrai-global
                 requires:
-                    - python35_install
-                    - python36_install
                     - python37_install
                     - python38_install
                     - python39_install
@@ -352,8 +302,6 @@ workflows:
                 name: publish
                 context: arrai-public-package-publishing
                 requires:
-                    - python35_install
-                    - python36_install
                     - python37_install
                     - python38_install
                     - python39_install
