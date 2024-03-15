@@ -301,6 +301,8 @@ workflows:
             - pypi/upload_release:
                 name: publish
                 context: arrai-public-package-publishing
+                executor: python312
+                cache_key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
                 requires:
                     - python37_install
                     - python38_install
