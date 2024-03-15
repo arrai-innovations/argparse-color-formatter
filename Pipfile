@@ -17,7 +17,7 @@ argparse_color_formatter = {path = ".", editable = true}
 #  and pipenv doesn't support referencing these from a requirements.txt
 build = "*"
 coverage = ">=5.0.0,<6.0.0"
-coverage-badge = ">=1.1.1,<2.0.0"
+coverage-badge = ">=1.1.0,<2.0.0"
 wheel = "*"
 
 
