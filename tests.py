@@ -8,8 +8,8 @@ from colors import bold
 from colors import color
 from colors import underline
 from functools import partial
+from io import StringIO
 from unittest import TestCase
-from unittest import skipIf
 
 from argparse_color_formatter import ColorHelpFormatter
 from argparse_color_formatter import ColorTextWrapper
@@ -572,7 +572,7 @@ class TestColorTextWrapper(TestCase):
     def test_bad_width_error(self):
         ctw = ColorTextWrapper(width=-1)
         self.assertRaisesRegex(
-            self, ValueError, r"invalid width -1 \(must be > 0\)", lambda: ctw.wrap("This is some text to wrap.")
+            ValueError, r"invalid width -1 \(must be > 0\)", lambda: ctw.wrap("This is some text to wrap.")
         )
 
     def test_starting_whitespace(self):
@@ -585,7 +585,6 @@ class TestColorTextWrapper(TestCase):
     def test_max_lines_and_placeholder(self):
         ctw = ColorTextWrapper(width=10, max_lines=2, placeholder="**" * 10)
         self.assertRaisesRegex(
-            self,
             ValueError,
             r"placeholder too large for max width",
             lambda: ctw.wrap("01234 56789 01234 56789 01234 56789 01234 56789"),
