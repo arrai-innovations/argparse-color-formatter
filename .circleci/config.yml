@@ -93,18 +93,18 @@ jobs:
         circleci_ip_ranges: true
         steps:
             - checkout
+            - utils/add_ssh_config
             - when:
                 condition:
                     equal: [ main, << pipeline.git.branch >> ]
                 steps:
-                    - utils/add_ssh_config:
-                        host: "docs"
-                        hostname: ${DOCS_HOST}
-                        port: ${DOCS_PORT}
-                        user: ${DOCS_USER}
                     - utils/make_status_shield:
                         status: running
                         color: lightblue
+                    - utils/rsync_file:
+                        file: ~/status.svg
+                        remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.svg
+                        host: docs
             - run:
                 name: "Install test requirements"
                 command: pip install -r requirements.txt -r dev_requirements.txt | cat; test ${PIPESTATUS[0]} -eq 0
