@@ -62,7 +62,7 @@ jobs:
         steps:
             - restore_cache:
                 keys:
-                    - build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+                    - build-{{ checksum "/etc/os-release" }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
             - run:
                   name: "Install wheel"
                   command: pip install ~/project/dist/*.whl
