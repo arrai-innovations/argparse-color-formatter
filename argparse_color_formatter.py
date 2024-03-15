@@ -5,12 +5,10 @@
 
 # changes were applied to allow these methods to deal with ansi color escape codes. These changes are
 #  Copyright (c) 2017, Emergence by Design Inc.
+#  Copyright (c) 2024, Arrai Innovations Inc.
 
 
-# some changes were also made to make this be python 2.7 compatible.
-
-
-__version__ = "1.2.2.post3"
+__version__ = "2.0.0"
 import re as _re
 from argparse import HelpFormatter
 from argparse import SUPPRESS
@@ -26,7 +24,6 @@ from argparse import ZERO_OR_MORE
 from gettext import gettext as _
 from textwrap import TextWrapper
 
-import six
 from colors import strip_color
 
 
@@ -247,14 +244,13 @@ class ColorTextWrapper(TextWrapper):
         lines = []
         if self.width <= 0:
             raise ValueError("invalid width %r (must be > 0)" % self.width)
-        if six.PY3:  # pragma: no branch
-            if self.max_lines is not None:
-                if self.max_lines > 1:
-                    indent = self.subsequent_indent
-                else:
-                    indent = self.initial_indent
-                if len(indent) + len(self.placeholder.lstrip()) > self.width:
-                    raise ValueError("placeholder too large for max width")
+        if self.max_lines is not None:
+            if self.max_lines > 1:
+                indent = self.subsequent_indent
+            else:
+                indent = self.initial_indent
+            if len(indent) + len(self.placeholder.lstrip()) > self.width:
+                raise ValueError("placeholder too large for max width")
 
         # Arrange in reverse order so items can be efficiently popped
         # from a stack of chucks.
@@ -307,34 +303,31 @@ class ColorTextWrapper(TextWrapper):
                 del cur_line[-1]
 
             if cur_line:
-                if six.PY2:
+                if (
+                    self.max_lines is None
+                    or len(lines) + 1 < self.max_lines
+                    or (not chunks or self.drop_whitespace and len(chunks) == 1 and not chunks[0].strip())
+                    and cur_len <= width
+                ):
+                    # Convert current line back to a string and store it in
+                    # list of all lines (return value).
                     lines.append(indent + "".join(cur_line))
                 else:
-                    if (
-                        self.max_lines is None
-                        or len(lines) + 1 < self.max_lines
-                        or (not chunks or self.drop_whitespace and len(chunks) == 1 and not chunks[0].strip())
-                        and cur_len <= width
-                    ):
-                        # Convert current line back to a string and store it in
-                        # list of all lines (return value).
-                        lines.append(indent + "".join(cur_line))
+                    while cur_line:
+                        if strip_color(cur_line[-1]).strip() and cur_len + len(self.placeholder) <= width:
+                            cur_line.append(self.placeholder)
+                            lines.append(indent + "".join(cur_line))
+                            break
+                        cur_len -= len(strip_color(cur_line[-1]))
+                        del cur_line[-1]
                     else:
-                        while cur_line:
-                            if strip_color(cur_line[-1]).strip() and cur_len + len(self.placeholder) <= width:
-                                cur_line.append(self.placeholder)
-                                lines.append(indent + "".join(cur_line))
+                        if lines:
+                            prev_line = lines[-1].rstrip()
+                            if len(strip_color(prev_line)) + len(self.placeholder) <= self.width:
+                                lines[-1] = prev_line + self.placeholder
                                 break
-                            cur_len -= len(strip_color(cur_line[-1]))
-                            del cur_line[-1]
-                        else:
-                            if lines:
-                                prev_line = lines[-1].rstrip()
-                                if len(strip_color(prev_line)) + len(self.placeholder) <= self.width:
-                                    lines[-1] = prev_line + self.placeholder
-                                    break
-                            lines.append(indent + self.placeholder.lstrip())
-                        break
+                        lines.append(indent + self.placeholder.lstrip())
+                    break
 
         return lines
 

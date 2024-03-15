@@ -5,9 +5,6 @@ orbs:
     pypi: arrai/pypi@3.1.0
     github: arrai/github@3.0.0
 executors:
-    python27:
-        docker:
-            - image: cimg/python:2.7
     python35:
         docker:
             - image: cimg/python:3.5
@@ -159,16 +156,6 @@ workflows:
     test_and_build:
         jobs:
             - tests:
-                name: python27
-                context: arrai-global
-                executor: python27
-                version: "2.7"
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
                 name: python35
                 context: arrai-global
                 executor: python35
@@ -251,7 +238,6 @@ workflows:
             - build:
                 name: build
                 requires:
-                    - python27
                     - python35
                     - python36
                     - python37
@@ -260,16 +246,6 @@ workflows:
                     - python310
                     - python311
                     - python312
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python27_install
-                executor: python27
-                requires:
-                    - build
                 filters:
                     branches:
                         only: /.*/
@@ -359,7 +335,6 @@ workflows:
                 name: release_on_github
                 context: arrai-global
                 requires:
-                    - python27_install
                     - python35_install
                     - python36_install
                     - python37_install
@@ -377,7 +352,6 @@ workflows:
                 name: publish
                 context: arrai-public-package-publishing
                 requires:
-                    - python27_install
                     - python35_install
                     - python36_install
                     - python37_install

@@ -2,14 +2,12 @@
 
 import argparse
 import os
-import six
 import sys
 from collections import OrderedDict
 from colors import bold
 from colors import color
 from colors import underline
 from functools import partial
-from six import StringIO
 from unittest import TestCase
 from unittest import skipIf
 
@@ -573,7 +571,7 @@ class TestColorArgsParserOutput(TestCase):
 class TestColorTextWrapper(TestCase):
     def test_bad_width_error(self):
         ctw = ColorTextWrapper(width=-1)
-        six.assertRaisesRegex(
+        self.assertRaisesRegex(
             self, ValueError, r"invalid width -1 \(must be > 0\)", lambda: ctw.wrap("This is some text to wrap.")
         )
 
@@ -584,24 +582,21 @@ class TestColorTextWrapper(TestCase):
             ["   01234 56789 01234", "56789 01234 56789", "01234 56789"],
         )
 
-    @skipIf(not six.PY34, "max_lines and placeholder were added in python 3.4")
     def test_max_lines_and_placeholder(self):
         ctw = ColorTextWrapper(width=10, max_lines=2, placeholder="**" * 10)
-        six.assertRaisesRegex(
+        self.assertRaisesRegex(
             self,
             ValueError,
             r"placeholder too large for max width",
             lambda: ctw.wrap("01234 56789 01234 56789 01234 56789 01234 56789"),
         )
 
-    @skipIf(not six.PY34, "max_lines was added in python 3.4")
     def test_max_lines_and_indent(self):
         ctw = ColorTextWrapper(width=20, max_lines=2, initial_indent="  ")
         self.assertEqual(
             ctw.wrap("01234 56789 01234 56789 01234 56789 01234 56789"), ["  01234 56789 01234", "56789 01234 [...]"]
         )
 
-    @skipIf(not six.PY34, "max_lines was added in python 3.4")
     def test_max_lines_and_subsequence_indent(self):
         ctw = ColorTextWrapper(width=20, max_lines=0, initial_indent="   ", subsequent_indent=" ")
         self.assertEqual(ctw.wrap("01234 56789 01234 56789 01234 56789 01234 56789"), ["   01234 56789 [...]"])
@@ -613,12 +608,10 @@ class TestColorTextWrapper(TestCase):
             ["0123456789", "0123456789", "0123456789", "0123456789"],
         )
 
-    @skipIf(not six.PY34, "max_lines was added in python 3.4")
     def test_placeholder_edge_case(self):
         ctw = ColorTextWrapper(width=4, max_lines=1, placeholder="***")
         self.assertEqual(ctw.wrap("0123456789"), ["***"])
 
-    @skipIf(not six.PY34, "max_lines was added in python 3.4")
     def test_placeholder_edge_case_2(self):
         ctw = ColorTextWrapper(width=5, max_lines=2, placeholder="****")
         self.assertEqual(ctw.wrap("0123456789 " * 2), ["01234", "****"])

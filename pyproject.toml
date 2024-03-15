@@ -10,15 +10,13 @@ description = """\
     characters when wrapping `argparse`'s help text into the terminal.\
     """
 readme = "README.md"
-requires-python = ">=2.7"
+requires-python = ">=3.5"
 license = { file = "LICENSE" }
 authors = [
     { name = "Arrai Innovations", email = "support@arrai.com" }
 ]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Programming Language :: Python :: 2",
-    "Programming Language :: Python :: 2.7",
+    "Development Status :: 6 - Mature",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
@@ -66,8 +64,6 @@ include = [
 [tool.coverage.report]
 exclude_lines = [
     "if __name__ == '__main__'",
-    "if six.PY2:",
-    "if PY2:",
     "raise NotImplementedError",
     "except ImportError",
 ]
