@@ -2,17 +2,16 @@
 
 import argparse
 import os
+import six
 import sys
 from collections import OrderedDict
-from functools import partial
-from unittest import TestCase
-from unittest import skipIf
-
-import six
 from colors import bold
 from colors import color
 from colors import underline
+from functools import partial
 from six import StringIO
+from unittest import TestCase
+from unittest import skipIf
 
 from argparse_color_formatter import ColorHelpFormatter
 from argparse_color_formatter import ColorTextWrapper
@@ -118,6 +117,31 @@ def rainbow_maker(args):
     )
     for arg_name, color_name in zip(color_pos.keys(), color_names.keys()):
         parser.add_argument(arg_name, default=color_name, help=rainbow_maker_arg_help(color_name))
+    parser.add_argument("-h", "--help", action="help", help="displays this {colorful} help text".format(**color_kwargs))
+    parser.parse_args(args)
+
+
+def rainbow_maker_colored_metavar(args, *, longer_help=1):
+    parser = argparse.ArgumentParser(
+        prog="{rainbow_maker}".format(**color_kwargs),
+        # with recent fixes, these will be colored as well if the metavar is colored, and wrapped properly.
+        #  so we don't need to do this ourselves anymore.
+        # usage="%(prog)s [-h] {first} {second} {third} {forth} {fifth} {sixth} {seventh}".format(**color_kwargs),
+        epilog="This epilog has some {colorful} escapes in it as well and should not wrap on 80.".format(
+            **color_kwargs
+        ),
+        description="This script is a test for {rainbow_maker}. This description consists of 140 chars."
+        " It should be able to fit onto two 80 char lines.".format(**color_kwargs),
+        formatter_class=ColorHelpFormatter,
+        add_help=False,
+    )
+    for arg_name, color_name in zip(color_pos.keys(), color_names.keys()):
+        parser.add_argument(
+            color_name,
+            metavar=color_kwargs[arg_name],
+            default=color_name,
+            help=rainbow_maker_arg_help(color_name) * longer_help,
+        )
     parser.add_argument("-h", "--help", action="help", help="displays this {colorful} help text".format(**color_kwargs))
     parser.parse_args(args)
 
@@ -472,6 +496,79 @@ class TestColorArgsParserOutput(TestCase):
             "usage: {rainbow_maker}\n" "{rainbow_maker}: error: unrecognized arguments: --bad\n".format(**color_kwargs),
         )
 
+    def test_color_output_with_long_help(self):
+        try:
+            os.environ["COLUMNS"] = "42"
+            out = StringIO()
+            with redirect_stdout(out):
+                self.assertRaises(SystemExit, partial(rainbow_maker_colored_metavar, longer_help=2), ["-h"])
+            out.seek(0)
+            self.assertEqual(
+                out.read(),
+                "usage: {rainbow_maker} [-h]\n"
+                "                     {first} {second} {third}\n"
+                "                     {forth} {fifth} {sixth}\n"
+                "                     {seventh}\n"
+                "\n"
+                "This script is a test for {rainbow_maker}.\n"
+                "This description consists of 140 chars.\n"
+                "It should be able to fit onto two 80\n"
+                "char lines.\n"
+                "\n"
+                "positional arguments:\n"
+                "  {first}       {color} used when making\n"
+                "              rainbow, {typically} this\n"
+                "              would be {red}.{color} used\n"
+                "              when making rainbow,\n"
+                "              {typically} this would be\n"
+                "              {red}.\n"
+                "  {second}      {color} used when making\n"
+                "              rainbow, {typically} this\n"
+                "              would be {orange}.{color} used\n"
+                "              when making rainbow,\n"
+                "              {typically} this would be\n"
+                "              {orange}.\n"
+                "  {third}       {color} used when making\n"
+                "              rainbow, {typically} this\n"
+                "              would be {yellow}.{color} used\n"
+                "              when making rainbow,\n"
+                "              {typically} this would be\n"
+                "              {yellow}.\n"
+                "  {forth}       {color} used when making\n"
+                "              rainbow, {typically} this\n"
+                "              would be {green}.{color} used\n"
+                "              when making rainbow,\n"
+                "              {typically} this would be\n"
+                "              {green}.\n"
+                "  {fifth}       {color} used when making\n"
+                "              rainbow, {typically} this\n"
+                "              would be {blue}.{color} used\n"
+                "              when making rainbow,\n"
+                "              {typically} this would be\n"
+                "              {blue}.\n"
+                "  {sixth}       {color} used when making\n"
+                "              rainbow, {typically} this\n"
+                "              would be {indigo}.{color} used\n"
+                "              when making rainbow,\n"
+                "              {typically} this would be\n"
+                "              {indigo}.\n"
+                "  {seventh}     {color} used when making\n"
+                "              rainbow, {typically} this\n"
+                "              would be {violet}.{color} used\n"
+                "              when making rainbow,\n"
+                "              {typically} this would be\n"
+                "              {violet}.\n"
+                "\n"
+                "{options_string}:\n"
+                "  -h, --help  displays this {colorful}\n"
+                "              help text\n"
+                "\n"
+                "This epilog has some {colorful} escapes in\n"
+                "it as well and should not wrap on 80.\n".format(**color_kwargs),
+            )
+        finally:
+            del os.environ["COLUMNS"]
+
 
 class TestColorTextWrapper(TestCase):
     def test_bad_width_error(self):
@@ -528,4 +625,4 @@ class TestColorTextWrapper(TestCase):
 
 
 if __name__ == "__main__":
-    rainbow_maker(None)
+    rainbow_maker_colored_metavar(None, longer_help=2)
