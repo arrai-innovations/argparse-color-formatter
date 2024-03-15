@@ -63,6 +63,7 @@ class ColorHelpFormatterMixin(object):
                 result = "[%s [%s ...]]" % metavar
             else:
                 result = "[%s ...]" % metavar
+        return result
 
     # modified upstream code
     # fmt: off
