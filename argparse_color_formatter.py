@@ -30,6 +30,7 @@ class ColorHelpFormatter(HelpFormatter):
         return ColorTextWrapper(width=width).wrap(text)
 
     # modified upstream code, not going to refactor for complexity.
+    # fmt: off
     def _format_usage(self, usage, actions, groups, prefix):  # noqa: C901
         if prefix is None:
             prefix = _("usage: ")
@@ -65,7 +66,11 @@ class ColorHelpFormatter(HelpFormatter):
             if len(prefix) + len(strip_color(usage)) > text_width:
 
                 # break usage into wrappable parts
-                part_regexp = r"\(.*?\)+|\[.*?\]+|\S+"
+                part_regexp = (
+                    r'\(.*?\)+(?=\s|$)|'
+                    r'\[.*?\]+(?=\s|$)|'
+                    r'\S+'
+                )
                 opt_usage = format(optionals, groups)
                 pos_usage = format(positionals, groups)
                 opt_parts = _re.findall(part_regexp, opt_usage)
@@ -124,8 +129,12 @@ class ColorHelpFormatter(HelpFormatter):
         return "%s%s\n\n" % (prefix, usage)
 
 
+# fmt: on
+
+
 class ColorTextWrapper(TextWrapper):
     # modified upstream code, not going to refactor for complexity.
+    # fmt: off
     def _wrap_chunks(self, chunks):  # noqa: C901
         """_wrap_chunks(chunks : [string]) -> [string]
 
@@ -232,6 +241,9 @@ class ColorTextWrapper(TextWrapper):
                         break
 
         return lines
+
+
+# fmt: on
 
 
 class ColorRawDescriptionHelpFormatter(ColorHelpFormatter):
