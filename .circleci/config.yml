@@ -397,7 +397,7 @@ workflows:
                 name: flake8
                 flake8_cmd: pflake8
                 context: arrai-global
-                executor: python312
+                executor: python311
                 wd: ~/project
                 filters:
                     branches:
@@ -406,7 +406,7 @@ workflows:
             - flake8/flake8:
                 name: flake8-no-badge
                 flake8_cmd: pflake8
-                executor: python312
+                executor: python311
                 create_badges: false
                 wd: ~/project
                 filters:
