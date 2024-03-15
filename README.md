@@ -5,6 +5,10 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 [![PYPI](https://img.shields.io/pypi/v/argparse-color-formatter?style=for-the-badge)](https://pypi.org/project/argparse-color-formatter/)
 
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python313.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python313.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python313/)
+
+![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python312.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python312.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python312/)
+
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python311.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python311.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python311/)
 
 ![Tests](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python310.svg) [![Coverage](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/python310.coverage.svg)](https://docs.arrai-dev.com/argparse-color-formatter/artifacts/main/htmlcov_python310/)

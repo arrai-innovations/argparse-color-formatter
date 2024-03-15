@@ -29,9 +29,12 @@ executors:
     python311:
         docker:
             - image: cimg/python:3.11
+    python312:
+        docker:
+            - image: cimg/python:3.12
 jobs:
     build:
-        executor: python311
+        executor: python312
         resource_class: small
         steps:
             - checkout
@@ -63,7 +66,7 @@ jobs:
             executor:
                 description: "Execution environment for the install test job."
                 type: executor
-                default: python311
+                default: python312
         executor: <<parameters.executor>>
         resource_class: small
         steps:
@@ -81,7 +84,7 @@ jobs:
             executor:
                 description: "Execution environment for the test job."
                 type: executor
-                default: python311
+                default: python312
         executor: <<parameters.executor>>
         resource_class: small
         steps:
@@ -223,6 +226,15 @@ workflows:
                         only: /.*/
                     tags:
                         only: /.*/
+            - tests:
+                  name: python312
+                  context: arrai-global
+                  executor: python312
+                  filters:
+                      branches:
+                          only: /.*/
+                      tags:
+                          only: /.*/
             - build:
                 name: build
                 requires:
@@ -234,6 +246,7 @@ workflows:
                     - python39
                     - python310
                     - python311
+                    - python312
                 filters:
                     branches:
                         only: /.*/
@@ -319,6 +332,16 @@ workflows:
                         only: /.*/
                     tags:
                         only: /.*/
+            - install:
+                  name: python312_install
+                  executor: python312
+                  requires:
+                      - build
+                  filters:
+                      branches:
+                          only: /.*/
+                      tags:
+                          only: /.*/
             - github/create_release:
                 name: release_on_github
                 context: arrai-global
@@ -331,6 +354,7 @@ workflows:
                     - python39_install
                     - python310_install
                     - python311_install
+                    - python312_install
                 filters:
                     tags:
                         only: /.*/
@@ -348,6 +372,7 @@ workflows:
                     - python39_install
                     - python310_install
                     - python311_install
+                    - python312_install
                 filters:
                     tags:
                         only: /.*/
