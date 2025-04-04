@@ -147,8 +147,8 @@ class ColorHelpFormatterMixin(object):
                     positionals.append(action)
 
             # build full usage string
-            format = self._format_actions_usage
-            action_usage = format(optionals + positionals, groups)
+            compose = self._format_actions_usage
+            action_usage = compose(optionals + positionals, groups)
             usage = " ".join([s for s in [prog, action_usage] if s])
 
             # wrap the usage parts if it's too long
@@ -161,8 +161,8 @@ class ColorHelpFormatterMixin(object):
                     r'\[.*?\]+(?=\s|$)|'
                     r'\S+'
                 )
-                opt_usage = format(optionals, groups)
-                pos_usage = format(positionals, groups)
+                opt_usage = compose(optionals, groups)
+                pos_usage = compose(positionals, groups)
                 opt_parts = _re.findall(part_regexp, opt_usage)
                 pos_parts = _re.findall(part_regexp, pos_usage)
                 assert " ".join(opt_parts) == opt_usage
