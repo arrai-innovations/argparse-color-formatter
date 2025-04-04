@@ -109,15 +109,6 @@ jobs:
                 folder: ./htmlcov/
                 remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
                 host: docs
-            - run:
-                name: "Create freeze file"
-                when: always
-                command: pipenv run pip freeze > ~/pip.freeze
-            - utils/rsync_file:
-                when: always
-                file: ~/pip.freeze
-                remote_file: ${CIRCLE_BRANCH}/${CIRCLE_JOB}.freeze
-                host: docs
             - when:
                 condition:
                     equal: [ main, << pipeline.git.branch >> ]
