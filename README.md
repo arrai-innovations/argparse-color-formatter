@@ -17,7 +17,7 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 ![Tests](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python37.svg) [![Coverage](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python37.coverage.svg)](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/htmlcov_python37/)
 
-![Flake8](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/flake8.svg)
+![Ruff](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/ruff.svg)
 
 ## Install
 
