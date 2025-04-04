@@ -5,12 +5,6 @@ orbs:
     pypi: arrai/pypi@3.1.0
     github: arrai/github@3.0.0
 executors:
-    python37:
-        docker:
-            - image: cimg/python:3.7
-    python38:
-        docker:
-            - image: cimg/python:3.8
     python39:
         docker:
             - image: cimg/python:3.9
@@ -23,6 +17,9 @@ executors:
     python312:
         docker:
             - image: cimg/python:3.12
+    python313:
+        docker:
+            - image: cimg/python:3.13
 jobs:
     build:
         executor: python312
@@ -150,26 +147,6 @@ workflows:
     test_and_build:
         jobs:
             - tests:
-                name: python37
-                context: arrai-global
-                executor: python37
-                version: "3.7"
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
-                name: python38
-                context: arrai-global
-                executor: python38
-                version: "3.8"
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - tests:
                 name: python39
                 context: arrai-global
                 executor: python39
@@ -209,35 +186,24 @@ workflows:
                           only: /.*/
                       tags:
                           only: /.*/
+            - tests:
+                  name: python313
+                  context: arrai-global
+                  executor: python313
+                  version: "3.13"
+                  filters:
+                      branches:
+                          only: /.*/
+                      tags:
+                          only: /.*/
             - build:
                 name: build
                 requires:
-                    - python37
-                    - python38
                     - python39
                     - python310
                     - python311
                     - python312
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python37_install
-                executor: python37
-                requires:
-                    - build
-                filters:
-                    branches:
-                        only: /.*/
-                    tags:
-                        only: /.*/
-            - install:
-                name: python38_install
-                executor: python38
-                requires:
-                    - build
+                    - python313
                 filters:
                     branches:
                         only: /.*/
@@ -283,16 +249,25 @@ workflows:
                           only: /.*/
                       tags:
                           only: /.*/
+            - install:
+                  name: python313_install
+                  executor: python313
+                  requires:
+                      - build
+                  filters:
+                      branches:
+                          only: /.*/
+                      tags:
+                          only: /.*/
             - github/create_release:
                 name: release_on_github
                 context: arrai-global
                 requires:
-                    - python37_install
-                    - python38_install
                     - python39_install
                     - python310_install
                     - python311_install
                     - python312_install
+                    - python313_install
                 filters:
                     tags:
                         only: /.*/
@@ -304,12 +279,11 @@ workflows:
                 executor: python312
                 cache_key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
                 requires:
-                    - python37_install
-                    - python38_install
                     - python39_install
                     - python310_install
                     - python311_install
                     - python312_install
+                    - python313_install
                 filters:
                     tags:
                         only: /.*/
