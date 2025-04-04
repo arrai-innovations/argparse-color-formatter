@@ -5,6 +5,8 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 [![PYPI](https://img.shields.io/pypi/v/argparse-color-formatter?style=for-the-badge)](https://pypi.org/project/argparse-color-formatter/)
 
+![Tests](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python313.svg) [![Coverage](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python313.coverage.svg)](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/htmlcov_python313/)
+
 ![Tests](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python312.svg) [![Coverage](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python312.coverage.svg)](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/htmlcov_python312/)
 
 ![Tests](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python311.svg) [![Coverage](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python311.coverage.svg)](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/htmlcov_python311/)
@@ -13,11 +15,7 @@ A [`formatter_class` for `argparse`](https://docs.python.org/3/library/argparse.
 
 ![Tests](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python39.svg) [![Coverage](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python39.coverage.svg)](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/htmlcov_python39/)
 
-![Tests](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python38.svg) [![Coverage](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python38.coverage.svg)](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/htmlcov_python38/)
-
-![Tests](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python37.svg) [![Coverage](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/python37.coverage.svg)](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/htmlcov_python37/)
-
-![Flake8](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/flake8.svg)
+![Ruff](https://docs.arrai.dev/argparse-color-formatter/artifacts/main/ruff.svg)
 
 ## Install
 

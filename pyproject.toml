@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=65.5.0"]
+requires = ["setuptools>=78.1.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,20 +11,19 @@ description = """\
     """
 readme = "README.md"
 requires-python = ">=3.5"
-license = { file = "LICENSE" }
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 authors = [
     { name = "Arrai Innovations", email = "support@arrai.com" }
 ]
 classifiers = [
     "Development Status :: 6 - Mature",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3.13",
     "Environment :: Console",
     "Intended Audience :: Developers",
 ]
@@ -37,21 +36,70 @@ repository = "https://github.com/arrai-innovations/argparse-color-formatter/"
 dependencies = { file = "requirements.txt" }
 version = { attr = "argparse_color_formatter.__version__" }
 
-# This might require revisiting when distutils is removed.
-[tool.distutils.bdist_wheel]
-universal = true
-
-[tool.flake8]
-exclude = ".git,*venv*"
-max-complexity = 10
-max-line-length = 120
-extend-ignore = [
-    # (flake8) Black incompatibility - see https://github.com/PyCQA/pycodestyle/issues/373
-    "E203",
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+exclude = [
+    # entries from .gitignore are excluded by default
+    ".circleci",
+    ".git",
+    ".github",
 ]
 
-[tool.black]
-line-length = 120
+[tool.ruff.lint]
+select = [
+    # flake8-builtins: https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+    "A",
+    # flake8-bugbear: https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+    "B0",
+    # flake8-comprehensions: https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "C4",
+    # mccabe: https://docs.astral.sh/ruff/rules/#mccabe-c90
+    "C90",
+    # pycodestyle: https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
+    "E",
+    "W",
+    # pyflakes: https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "F",
+    # flake8-fixme: https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
+    "FIX",
+    # flake8-logging-format: https://docs.astral.sh/ruff/rules/#flake8-logging-format-g
+    "G",
+    # isort: https://docs.astral.sh/ruff/rules/#isort-i
+    "I",
+    # pep8-naming: https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "N",
+    # pylint: https://docs.astral.sh/ruff/rules/#pylint-pl
+    "PLC",
+    "PLE",
+    # ruff: https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+    "RUF010",
+    "RUF100",
+    # flake8-simplify: https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+    "SIM",
+    # flake8-debugger: https://docs.astral.sh/ruff/rules/#flake8-debugger-t10
+    "T10",
+    # flake8-print: https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "T20",
+    # flake8-tidy-imports: https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
+    "TID",
+]
+
+ignore = [
+    # pycodestyle: let the reformatter deal with long lines
+    "E501",
+    # flake8-simplify: try-except-pass is fine
+    "SIM105",
+    # flake8-simplify: readability matters
+    "SIM108",
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+force-single-line = true
+lines-after-imports = 2
 
 [tool.coverage.run]
 branch = true

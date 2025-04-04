@@ -10,17 +10,18 @@
 
 __version__ = "2.0.0.post1"
 import re as _re
-from argparse import HelpFormatter
 from argparse import SUPPRESS
 from argparse import ArgumentDefaultsHelpFormatter
+from argparse import HelpFormatter
+
 
 try:
     from argparse import MetavarTypeHelpFormatter
 except ImportError:
     pass
+from argparse import ZERO_OR_MORE
 from argparse import RawDescriptionHelpFormatter
 from argparse import RawTextHelpFormatter
-from argparse import ZERO_OR_MORE
 from gettext import gettext as _
 from textwrap import TextWrapper
 
@@ -126,15 +127,15 @@ class ColorHelpFormatterMixin(object):
 
         # if usage is specified, use that
         if usage is not None:
-            usage = usage % dict(prog=self._prog)
+            usage = usage % {"prog": self._prog}
 
         # if no optionals or positionals are available, usage is just prog
         elif usage is None and not actions:
-            usage = "%(prog)s" % dict(prog=self._prog)
+            usage = "%(prog)s" % {"prog": self._prog}
 
         # if optionals and positionals are available, calculate usage
         elif usage is None:
-            prog = "%(prog)s" % dict(prog=self._prog)
+            prog = "%(prog)s" % {"prog": self._prog}
 
             # split optionals from positionals
             optionals = []
@@ -146,8 +147,8 @@ class ColorHelpFormatterMixin(object):
                     positionals.append(action)
 
             # build full usage string
-            format = self._format_actions_usage
-            action_usage = format(optionals + positionals, groups)
+            compose = self._format_actions_usage
+            action_usage = compose(optionals + positionals, groups)
             usage = " ".join([s for s in [prog, action_usage] if s])
 
             # wrap the usage parts if it's too long
@@ -160,8 +161,8 @@ class ColorHelpFormatterMixin(object):
                     r'\[.*?\]+(?=\s|$)|'
                     r'\S+'
                 )
-                opt_usage = format(optionals, groups)
-                pos_usage = format(positionals, groups)
+                opt_usage = compose(optionals, groups)
+                pos_usage = compose(positionals, groups)
                 opt_parts = _re.findall(part_regexp, opt_usage)
                 pos_parts = _re.findall(part_regexp, pos_usage)
                 assert " ".join(opt_parts) == opt_usage
@@ -283,7 +284,7 @@ class ColorTextWrapper(TextWrapper):
 
                 # Can at least squeeze this chunk onto the current line.
                 # modified upstream code, not going to refactor for ambiguous variable name.
-                if cur_len + l <= width:  # noqa: E741
+                if cur_len + l <= width:
                     cur_line.append(chunks.pop())
                     cur_len += l
 

@@ -4,30 +4,32 @@ import argparse
 import os
 import sys
 from collections import OrderedDict
-from colors import bold
-from colors import color
-from colors import underline
 from functools import partial
 from io import StringIO
 from unittest import TestCase
 
+from colors import bold
+from colors import color
+from colors import underline
+
 from argparse_color_formatter import ColorHelpFormatter
 from argparse_color_formatter import ColorTextWrapper
 
+
 try:
-    from contextlib import redirect_stdout
     from contextlib import redirect_stderr
+    from contextlib import redirect_stdout
 except ImportError:
     import contextlib
 
-    @contextlib.contextmanager  # noqa: E303
+    @contextlib.contextmanager
     def redirect_stdout(target):
         original = sys.stdout
         sys.stdout = target
         yield
         sys.stdout = original
 
-    @contextlib.contextmanager  # noqa: E303
+    @contextlib.contextmanager
     def redirect_stderr(target):
         original = sys.stderr
         sys.stderr = target
