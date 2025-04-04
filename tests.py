@@ -20,14 +20,14 @@ try:
 except ImportError:
     import contextlib
 
-    @contextlib.contextmanager  # noqa: E303
+    @contextlib.contextmanager
     def redirect_stdout(target):
         original = sys.stdout
         sys.stdout = target
         yield
         sys.stdout = original
 
-    @contextlib.contextmanager  # noqa: E303
+    @contextlib.contextmanager
     def redirect_stderr(target):
         original = sys.stderr
         sys.stderr = target

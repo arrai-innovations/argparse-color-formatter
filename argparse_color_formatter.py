@@ -283,7 +283,7 @@ class ColorTextWrapper(TextWrapper):
 
                 # Can at least squeeze this chunk onto the current line.
                 # modified upstream code, not going to refactor for ambiguous variable name.
-                if cur_len + l <= width:  # noqa: E741
+                if cur_len + l <= width:
                     cur_line.append(chunks.pop())
                     cur_len += l
 
