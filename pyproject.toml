@@ -11,6 +11,7 @@ description = """\
     """
 readme = "README.md"
 requires-python = ">=3.5"
+license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 authors = [
     { name = "Arrai Innovations", email = "support@arrai.com" }
@@ -23,7 +24,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "License :: OSI Approved :: BSD License",
     "Environment :: Console",
     "Intended Audience :: Developers",
 ]
