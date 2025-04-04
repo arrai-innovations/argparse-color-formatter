@@ -10,17 +10,18 @@
 
 __version__ = "2.0.0.post1"
 import re as _re
-from argparse import HelpFormatter
 from argparse import SUPPRESS
 from argparse import ArgumentDefaultsHelpFormatter
+from argparse import HelpFormatter
+
 
 try:
     from argparse import MetavarTypeHelpFormatter
 except ImportError:
     pass
+from argparse import ZERO_OR_MORE
 from argparse import RawDescriptionHelpFormatter
 from argparse import RawTextHelpFormatter
-from argparse import ZERO_OR_MORE
 from gettext import gettext as _
 from textwrap import TextWrapper
 
