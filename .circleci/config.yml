@@ -76,16 +76,19 @@ jobs:
                 description: "Python version to test against."
                 type: string
                 default: "3.12"
+            publish_artifacts:
+                description: "Publish status badges and HTML coverage to the documentation host."
+                type: boolean
+                default: false
         executor: <<parameters.executor>>
         resource_class: small
         circleci_ip_ranges: true
         steps:
             - checkout
-            - utils/add_ssh_config
             - when:
-                condition:
-                    equal: [ main, << pipeline.git.branch >> ]
+                condition: <<parameters.publish_artifacts>>
                 steps:
+                    - utils/add_ssh_config
                     - utils/make_status_shield:
                         status: running
                         color: lightblue
@@ -104,15 +107,14 @@ jobs:
                 command: |
                     coverage html
                     coverage report | grep -oP '^TOTAL.*\d' | awk '{print $NF}' >> /tmp/.coveragep
-            - utils/rsync_folder:
-                when: always
-                folder: ./htmlcov/
-                remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
-                host: docs
             - when:
-                condition:
-                    equal: [ main, << pipeline.git.branch >> ]
+                condition: <<parameters.publish_artifacts>>
                 steps:
+                    - utils/rsync_folder:
+                        when: always
+                        folder: ./htmlcov/
+                        remote_folder: ${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}
+                        host: docs
                     - utils/make_coverage_shield:
                         when: always
                         link: "https://${DOCS_HOST}/${CIRCLE_PROJECT_REPONAME}/artifacts/${CIRCLE_BRANCH}/htmlcov_${CIRCLE_JOB}/"
@@ -137,54 +139,116 @@ jobs:
 workflows:
     test_and_build:
         jobs:
+            # Main publishes badges and coverage using the protected context.
             - tests:
                 name: python39
                 context: arrai-global
                 executor: python39
                 version: "3.9"
+                publish_artifacts: true
                 filters:
                     branches:
-                        only: /.*/
+                        only:
+                            - main
                     tags:
-                        only: /.*/
+                        ignore: /.*/
             - tests:
                 name: python310
                 context: arrai-global
                 executor: python310
                 version: "3.10"
+                publish_artifacts: true
                 filters:
                     branches:
-                        only: /.*/
+                        only:
+                            - main
                     tags:
-                        only: /.*/
+                        ignore: /.*/
             - tests:
                 name: python311
                 context: arrai-global
                 executor: python311
                 version: "3.11"
+                publish_artifacts: true
                 filters:
                     branches:
-                        only: /.*/
+                        only:
+                            - main
                     tags:
-                        only: /.*/
+                        ignore: /.*/
             - tests:
                   name: python312
                   context: arrai-global
                   executor: python312
                   version: "3.12"
+                  publish_artifacts: true
                   filters:
                       branches:
-                          only: /.*/
+                          only:
+                              - main
                       tags:
-                          only: /.*/
+                          ignore: /.*/
             - tests:
                   name: python313
                   context: arrai-global
                   executor: python313
                   version: "3.13"
+                  publish_artifacts: true
                   filters:
                       branches:
+                          only:
+                              - main
+                      tags:
+                          ignore: /.*/
+            # Other branches and tags run the same tests without credentials.
+            - tests:
+                name: python39-no-badge
+                executor: python39
+                version: "3.9"
+                filters:
+                    branches:
+                        ignore:
+                            - main
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python310-no-badge
+                executor: python310
+                version: "3.10"
+                filters:
+                    branches:
+                        ignore:
+                            - main
+                    tags:
+                        only: /.*/
+            - tests:
+                name: python311-no-badge
+                executor: python311
+                version: "3.11"
+                filters:
+                    branches:
+                        ignore:
+                            - main
+                    tags:
+                        only: /.*/
+            - tests:
+                  name: python312-no-badge
+                  executor: python312
+                  version: "3.12"
+                  filters:
+                      branches:
+                          ignore:
+                              - main
+                      tags:
                           only: /.*/
+            - tests:
+                  name: python313-no-badge
+                  executor: python313
+                  version: "3.13"
+                  filters:
+                      branches:
+                          ignore:
+                              - main
                       tags:
                           only: /.*/
             - build:
@@ -195,6 +259,11 @@ workflows:
                     - python311
                     - python312
                     - python313
+                    - python39-no-badge
+                    - python310-no-badge
+                    - python311-no-badge
+                    - python312-no-badge
+                    - python313-no-badge
                 filters:
                     branches:
                         only: /.*/
