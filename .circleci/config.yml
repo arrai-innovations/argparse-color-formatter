@@ -20,6 +20,9 @@ executors:
     python313:
         docker:
             - image: cimg/python:3.13
+    python314:
+        docker:
+            - image: cimg/python:3.14
 jobs:
     build:
         executor: python312
@@ -200,6 +203,18 @@ workflows:
                               - main
                       tags:
                           ignore: /.*/
+            - tests:
+                  name: python314
+                  context: arrai-global
+                  executor: python314
+                  version: "3.14"
+                  publish_artifacts: true
+                  filters:
+                      branches:
+                          only:
+                              - main
+                      tags:
+                          ignore: /.*/
             # Other branches and tags run the same tests without credentials.
             - tests:
                 name: python39-no-badge
@@ -251,6 +266,16 @@ workflows:
                               - main
                       tags:
                           only: /.*/
+            - tests:
+                  name: python314-no-badge
+                  executor: python314
+                  version: "3.14"
+                  filters:
+                      branches:
+                          ignore:
+                              - main
+                      tags:
+                          only: /.*/
             - build:
                 name: build
                 requires:
@@ -259,11 +284,13 @@ workflows:
                     - python311
                     - python312
                     - python313
+                    - python314
                     - python39-no-badge
                     - python310-no-badge
                     - python311-no-badge
                     - python312-no-badge
                     - python313-no-badge
+                    - python314-no-badge
                 filters:
                     branches:
                         only: /.*/
@@ -319,6 +346,16 @@ workflows:
                           only: /.*/
                       tags:
                           only: /.*/
+            - install:
+                  name: python314_install
+                  executor: python314
+                  requires:
+                      - build
+                  filters:
+                      branches:
+                          only: /.*/
+                      tags:
+                          only: /.*/
             - github/create_release:
                 name: release_on_github
                 context: arrai-global
@@ -328,6 +365,7 @@ workflows:
                     - python311_install
                     - python312_install
                     - python313_install
+                    - python314_install
                 filters:
                     tags:
                         only: /.*/
@@ -344,6 +382,7 @@ workflows:
                     - python311_install
                     - python312_install
                     - python313_install
+                    - python314_install
                 filters:
                     tags:
                         only: /.*/
