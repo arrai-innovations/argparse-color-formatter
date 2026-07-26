@@ -10,7 +10,7 @@ description = """\
     characters when wrapping `argparse`'s help text into the terminal.\
     """
 readme = "README.md"
-requires-python = ">=3.5"
+requires-python = ">=3.9"
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 authors = [
