@@ -150,11 +150,12 @@ class ColorHelpFormatterMixin(object):
         elif usage is None:
             prog = "%(prog)s" % {"prog": self._prog}
 
-            # Python 3.14 replaced _format_actions_usage with
-            # _get_actions_usage_parts.
-            get_usage_parts = getattr(self, "_get_actions_usage_parts", None)
-            if get_usage_parts is not None:
-                parts, pos_start = get_usage_parts(actions, groups)
+            # Python 3.14 removed _format_actions_usage and changed the
+            # return value of _get_actions_usage_parts. Python 3.13 exposes
+            # both methods, including the older return value.
+            compose = getattr(self, "_format_actions_usage", None)
+            if compose is None:
+                parts, pos_start = self._get_actions_usage_parts(actions, groups)
                 opt_parts = parts[:pos_start]
                 pos_parts = parts[pos_start:]
                 action_usage = " ".join(parts)
@@ -168,7 +169,6 @@ class ColorHelpFormatterMixin(object):
                     else:
                         positionals.append(action)
 
-                compose = self._format_actions_usage
                 action_usage = compose(optionals + positionals, groups)
 
             usage = " ".join([s for s in [prog, action_usage] if s])
@@ -177,7 +177,7 @@ class ColorHelpFormatterMixin(object):
             text_width = self._width - self._current_indent
             if prefix_len + len(strip_color(usage)) > text_width:
 
-                if get_usage_parts is None:
+                if compose is not None:
                     # break usage into wrappable parts
                     part_regexp = (
                         r'\(.*?\)+(?=\s|$)|'
