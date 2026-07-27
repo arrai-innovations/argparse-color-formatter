@@ -8,7 +8,7 @@
 #  Copyright (c) 2024, Arrai Innovations Inc.
 
 
-__version__ = "2.0.0.post1"
+__version__ = "3.0.0"
 import re as _re
 from argparse import SUPPRESS
 from argparse import ArgumentDefaultsHelpFormatter
