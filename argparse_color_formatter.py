@@ -121,52 +121,75 @@ class ColorHelpFormatterMixin(object):
     # modified upstream code, not going to refactor for complexity.
     # fmt: off
     def _format_usage(self, usage, actions, groups, prefix):  # noqa: C901
+        theme = getattr(self, "_theme", None)
+
         if prefix is None:
             prefix = _("usage: ")
         prefix_len = len(strip_color(prefix))
 
         # if usage is specified, use that
         if usage is not None:
-            usage = usage % {"prog": self._prog}
+            if theme is None:
+                usage = usage % {"prog": self._prog}
+            else:
+                usage = (
+                    theme.prog_extra
+                    + usage
+                    % {"prog": f"{theme.prog}{self._prog}{theme.reset}{theme.prog_extra}"}
+                    + theme.reset
+                )
 
         # if no optionals or positionals are available, usage is just prog
         elif usage is None and not actions:
-            usage = "%(prog)s" % {"prog": self._prog}
+            if theme is None:
+                usage = "%(prog)s" % {"prog": self._prog}
+            else:
+                usage = f"{theme.prog}{self._prog}{theme.reset}"
 
         # if optionals and positionals are available, calculate usage
         elif usage is None:
             prog = "%(prog)s" % {"prog": self._prog}
 
-            # split optionals from positionals
-            optionals = []
-            positionals = []
-            for action in actions:
-                if action.option_strings:
-                    optionals.append(action)
-                else:
-                    positionals.append(action)
+            # Python 3.14 removed _format_actions_usage and changed the
+            # return value of _get_actions_usage_parts. Python 3.13 exposes
+            # both methods, including the older return value.
+            compose = getattr(self, "_format_actions_usage", None)
+            if compose is None:
+                parts, pos_start = self._get_actions_usage_parts(actions, groups)
+                opt_parts = parts[:pos_start]
+                pos_parts = parts[pos_start:]
+                action_usage = " ".join(parts)
+            else:
+                # split optionals from positionals
+                optionals = []
+                positionals = []
+                for action in actions:
+                    if action.option_strings:
+                        optionals.append(action)
+                    else:
+                        positionals.append(action)
 
-            # build full usage string
-            compose = self._format_actions_usage
-            action_usage = compose(optionals + positionals, groups)
+                action_usage = compose(optionals + positionals, groups)
+
             usage = " ".join([s for s in [prog, action_usage] if s])
 
             # wrap the usage parts if it's too long
             text_width = self._width - self._current_indent
             if prefix_len + len(strip_color(usage)) > text_width:
 
-                # break usage into wrappable parts
-                part_regexp = (
-                    r'\(.*?\)+(?=\s|$)|'
-                    r'\[.*?\]+(?=\s|$)|'
-                    r'\S+'
-                )
-                opt_usage = compose(optionals, groups)
-                pos_usage = compose(positionals, groups)
-                opt_parts = _re.findall(part_regexp, opt_usage)
-                pos_parts = _re.findall(part_regexp, pos_usage)
-                assert " ".join(opt_parts) == opt_usage
-                assert " ".join(pos_parts) == pos_usage
+                if compose is not None:
+                    # break usage into wrappable parts
+                    part_regexp = (
+                        r'\(.*?\)+(?=\s|$)|'
+                        r'\[.*?\]+(?=\s|$)|'
+                        r'\S+'
+                    )
+                    opt_usage = compose(optionals, groups)
+                    pos_usage = compose(positionals, groups)
+                    opt_parts = _re.findall(part_regexp, opt_usage)
+                    pos_parts = _re.findall(part_regexp, pos_usage)
+                    assert " ".join(opt_parts) == opt_usage
+                    assert " ".join(pos_parts) == pos_usage
 
                 # helper for wrapping lines
                 def get_lines(parts, indent, prefix=None):
@@ -217,8 +240,14 @@ class ColorHelpFormatterMixin(object):
                 # join lines into usage
                 usage = "\n".join(lines)
 
+            if theme is not None:
+                usage = usage.removeprefix(prog)
+                usage = f"{theme.prog}{prog}{theme.reset}{usage}"
+
         # prefix with 'usage:'
-        return "%s%s\n\n" % (prefix, usage)
+        if theme is None:
+            return "%s%s\n\n" % (prefix, usage)
+        return f"{theme.usage}{prefix}{theme.reset}{usage}\n\n"
 
 
 # fmt: on

@@ -7,9 +7,11 @@ from collections import OrderedDict
 from functools import partial
 from io import StringIO
 from unittest import TestCase
+from unittest import skipUnless
 
 from colors import bold
 from colors import color
+from colors import strip_color
 from colors import underline
 
 from argparse_color_formatter import ColorHelpFormatter
@@ -493,7 +495,7 @@ class TestColorArgsParserOutput(TestCase):
         out.seek(0)
         self.assertEqual(
             out.read(),
-            "usage: {rainbow_maker}\n" "{rainbow_maker}: error: unrecognized arguments: --bad\n".format(**color_kwargs),
+            "usage: {rainbow_maker}\n{rainbow_maker}: error: unrecognized arguments: --bad\n".format(**color_kwargs),
         )
 
     def test_color_output_with_long_help(self):
@@ -568,6 +570,50 @@ class TestColorArgsParserOutput(TestCase):
             )
         finally:
             del os.environ["COLUMNS"]
+
+    @skipUnless(sys.version_info >= (3, 14), "argparse added native colors in Python 3.14")
+    def test_python314_native_colors_and_application_colors_wrap_correctly(self):
+        old_columns = os.environ.get("COLUMNS")
+        old_python_colors = os.environ.get("PYTHON_COLORS")
+        try:
+            os.environ["COLUMNS"] = "32"
+            os.environ["PYTHON_COLORS"] = "1"
+            colored_word = color("ABCDEFGHIJ", fg="red")
+            parser = argparse.ArgumentParser(
+                prog="rainbow-tool",
+                description=f"prefix {colored_word} suffix words that should wrap cleanly",
+                formatter_class=ColorHelpFormatter,
+            )
+            parser.add_argument(
+                "--example",
+                metavar=colored_word,
+                help=f"prefix {colored_word} suffix words that should wrap cleanly",
+            )
+
+            output = parser.format_help()
+            self.assertIn("\x1b[", output)
+            plain_output = strip_color(output)
+            self.assertIn(
+                "usage: rainbow-tool [-h]\n                    [--example ABCDEFGHIJ]\n",
+                plain_output,
+            )
+            self.assertIn(
+                "prefix ABCDEFGHIJ suffix words\nthat should wrap cleanly\n",
+                plain_output,
+            )
+            self.assertIn(
+                "          prefix ABCDEFGHIJ\n          suffix words that\n          should wrap cleanly\n",
+                plain_output,
+            )
+        finally:
+            if old_columns is None:
+                del os.environ["COLUMNS"]
+            else:
+                os.environ["COLUMNS"] = old_columns
+            if old_python_colors is None:
+                del os.environ["PYTHON_COLORS"]
+            else:
+                os.environ["PYTHON_COLORS"] = old_python_colors
 
 
 class TestColorTextWrapper(TestCase):
