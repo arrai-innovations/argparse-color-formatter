@@ -50,7 +50,7 @@ jobs:
             - save_cache:
                 paths:
                     - ~/project/dist
-                key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+                key: build-{{ arch }}-{{ .Environment.CIRCLE_SHA1 }}
     install:
         parameters:
             executor:
@@ -62,7 +62,7 @@ jobs:
         steps:
             - restore_cache:
                 keys:
-                    - build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+                    - build-{{ arch }}-{{ .Environment.CIRCLE_SHA1 }}
             - run:
                   name: "Install wheel"
                   command: pip install ~/project/dist/*.whl
@@ -375,7 +375,7 @@ workflows:
                 name: publish
                 context: arrai-public-package-publishing
                 executor: python312
-                cache_key: build-{{ arch }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+                cache_key: build-{{ arch }}-{{ .Environment.CIRCLE_SHA1 }}
                 requires:
                     - python39_install
                     - python310_install
